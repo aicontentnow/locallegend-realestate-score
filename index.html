@@ -360,7 +360,7 @@ nav {
 .vid-bug {
   position: absolute; top: 16px; left: 16px; z-index: 3;
   width: 44px; height: 44px; border-radius: 13px;
-  background: var(--legend-blue); display: grid; place-items: center;
+  background: var(--ink-800); display: grid; place-items: center;
   box-shadow: 0 6px 18px rgba(0,0,0,.4);
 }
 .vid-bug ll-badge { width: 24px; height: 31px; }
@@ -453,7 +453,7 @@ nav {
 .vcard image-slot { position: absolute; inset: 0; width: 100%; height: 100%; }
 .vcard .vb {
   position: absolute; top: 12px; left: 12px; width: 38px; height: 38px;
-  border-radius: 11px; background: var(--legend-blue);
+  border-radius: 11px; background: var(--ink-800);
   display: grid; place-items: center; z-index: 2;
   box-shadow: 0 4px 12px rgba(0,0,0,.4);
 }
@@ -534,7 +534,7 @@ footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); pa
   .excl-pill { display: none; }
 }
 @media (max-width: 600px) {
-  .wrap { padding: 0 22px; }
+  .wrap { padding: 0 20px; }
   .vgrid { grid-template-columns: repeat(2,1fr); }
   .vid-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
   .vid-tabs::-webkit-scrollbar { display: none; }
@@ -542,6 +542,12 @@ footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); pa
   .excl { padding: 40px 26px; }
   .cta-block { padding: 64px 0 72px; }
   .modal-card { padding: 30px 24px 26px; }
+  /* Hide decorative overflow elements on mobile */
+  .score-float { display: none; }
+  .float-pin { display: none; }
+  /* Contain hero showcase within viewport */
+  .hero-section { overflow-x: hidden; }
+  .vid-frame-wrap { overflow: hidden; }
 }
 </style>
 <!-- Supabase JS client -->
