@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Legend — Visual Identity Handoff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   LOCAL LEGEND — Brand Handoff Document
+   For: Back To Claude Works / AI Builder
+   Subject: Score App Page build
+   ============================================================ */
+
+:root {
+  --legend-blue: #3B6BFF;
+  --signal-lime: #C6F042;
+  --ink-navy:    #0E1016;
+  --cream:       #F4EFE6;
+  --white:       #FFFFFF;
+
+  --blue-700:  #2A52D6;
+  --blue-100:  #DCE5FF;
+  --ink-800:   #15181F;
+  --ink-700:   #1D212B;
+  --ink-600:   #2A2F3B;
+  --cream-200: #E7DFD0;
+  --ink-soft:  #5A6072;
+
+  --font-display: "Poppins", system-ui, sans-serif;
+  --font-body:    "Inter", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", monospace;
+
+  --r-sm:   12px;
+  --r-md:   20px;
+  --r-lg:   32px;
+  --r-xl:   44px;
+  --r-pill: 999px;
+
+  --shadow-sm:   0 4px 14px rgba(14,16,22,.10);
+  --shadow-md:   0 14px 40px rgba(14,16,22,.16);
+  --shadow-blue: 0 18px 48px rgba(59,107,255,.34);
+  --shadow-lime: 0 12px 34px rgba(198,240,66,.40);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink-navy);
+  background: var(--ink-navy);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Layout ---- */
+.doc { max-width: 1120px; margin: 0 auto; padding: 0 40px 120px; }
+
+/* ---- Cover ---- */
+.cover {
+  background: var(--ink-navy);
+  padding: 80px 0 72px;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: "";
+  position: absolute;
+  width: 640px; height: 640px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,107,255,.18) 0%, transparent 70%);
+  top: -120px; right: -80px;
+  pointer-events: none;
+}
+.cover-inner { position: relative; z-index: 1; }
+.cover-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 52px; }
+.cover-badge-wrap { display: flex; align-items: center; gap: 20px; }
+.doc-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--signal-lime);
+  margin: 0 0 18px;
+}
+.cover h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -.035em;
+  font-size: clamp(46px, 6vw, 80px);
+  line-height: .93;
+  margin: 0;
+  color: var(--white);
+  text-wrap: balance;
+}
+.cover h1 em { color: var(--legend-blue); font-style: normal; }
+.cover-sub {
+  margin: 26px 0 0;
+  font-size: 18px;
+  color: rgba(244,239,230,.7);
+  line-height: 1.6;
+  max-width: 52ch;
+}
+.cover-meta {
+  text-align: right;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  color: rgba(244,239,230,.5);
+  line-height: 1.8;
+  flex-shrink: 0;
+}
+.cover-meta strong { color: var(--cream); display: block; font-size: 15px; }
+.cover-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 36px; }
+.tag-pill {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: var(--r-pill);
+  background: var(--ink-700);
+  color: rgba(244,239,230,.7);
+  border: 1.5px solid var(--ink-600);
+}
+.tag-pill.blue { background: rgba(59,107,255,.2); color: var(--legend-blue); border-color: rgba(59,107,255,.35); }
+.tag-pill.lime { background: rgba(198,240,66,.15); color: var(--signal-lime); border-color: rgba(198,240,66,.3); }
+
+/* ---- Sections ---- */
+.section {
+  margin-top: 0;
+  padding: 72px 0;
+  border-bottom: 1.5px solid var(--ink-600);
+}
+.section:last-child { border-bottom: none; }
+
+.section.light {
+  background: var(--cream);
+  margin: 0 -40px;
+  padding: 72px 40px;
+  border-bottom: none;
+}
+.section.light + .section { border-top: 1.5px solid var(--cream-200); }
+
+.sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 36px; }
+.sec-num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--ink-navy);
+  background: var(--signal-lime);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  flex: 0 0 auto;
+  letter-spacing: -.01em;
+}
+.sec-num.on-dark { background: var(--ink-700); color: var(--signal-lime); border: 1.5px solid var(--ink-600); }
+.sec-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(24px, 3vw, 34px);
+  letter-spacing: -.025em;
+  margin: 0;
+  color: var(--cream);
+  line-height: 1.05;
+}
+.sec-title.dark { color: var(--ink-navy); }
+.sec-note {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+  opacity: .7;
+  max-width: 62ch;
+  color: var(--cream);
+}
+.sec-note.dark { color: var(--ink-navy); }
+
+/* ---- Code blocks ---- */
+.code-block {
+  background: var(--ink-800);
+  border: 1.5px solid var(--ink-600);
+  border-radius: var(--r-md);
+  padding: 24px 28px;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--cream);
+  overflow-x: auto;
+  margin: 0;
+}
+.code-block .c-kw   { color: var(--signal-lime); }
+.code-block .c-val  { color: #7CB8FF; }
+.code-block .c-str  { color: #F4A261; }
+.code-block .c-com  { color: var(--ink-soft); font-style: italic; }
+.code-block .c-tag  { color: #C6F042; }
+.code-block .c-attr { color: #7CB8FF; }
+.code-block .c-prop { color: rgba(244,239,230,.8); }
+
+/* ---- Color palette ---- */
+.swatches { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr 1fr; gap: 16px; }
+.sw { border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+.sw .chip { height: 140px; display: flex; align-items: flex-end; padding: 14px 16px; }
+.sw .info { background: var(--ink-700); padding: 14px 16px 18px; border: 1.5px solid var(--ink-600); border-top: none; border-radius: 0 0 var(--r-md) var(--r-md); }
+.sw .nm { font-family: var(--font-display); font-weight: 700; font-size: 15px; margin: 0 0 2px; color: var(--cream); }
+.sw .hex { font-family: var(--font-mono); font-weight: 500; font-size: 13px; color: var(--signal-lime); }
+.sw .tok { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); margin-top: 5px; }
+.sw .role { font-size: 12.5px; color: rgba(244,239,230,.55); margin: 8px 0 0; line-height: 1.45; }
+.chip-badge { font-family: var(--font-display); font-weight: 700; font-size: 11px; padding: 4px 10px; border-radius: var(--r-pill); }
+.support-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+.sup-sw { border-radius: var(--r-sm); overflow: hidden; }
+.sup-sw .schip { height: 60px; }
+.sup-sw .sinfo { background: var(--ink-700); padding: 10px 12px 12px; border: 1.5px solid var(--ink-600); border-top: none; border-radius: 0 0 var(--r-sm) var(--r-sm); }
+.sup-sw .snm { font-family: var(--font-display); font-weight: 700; font-size: 12.5px; color: var(--cream); margin: 0 0 2px; }
+.sup-sw .shex { font-family: var(--font-mono); font-size: 11px; color: var(--signal-lime); }
+.contrast-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 24px; }
+.cpair { border-radius: var(--r-md); padding: 22px 18px; font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+.cpair small { display: block; font-size: 11px; font-weight: 600; opacity: .75; margin-top: 5px; font-family: var(--font-mono); }
+
+/* ---- Typography ---- */
+.type-block { background: var(--ink-700); border: 1.5px solid var(--ink-600); border-radius: var(--r-lg); overflow: hidden; }
+.type-row { display: grid; grid-template-columns: 180px 1fr; gap: 28px; align-items: baseline; padding: 28px 32px; border-bottom: 1.5px solid var(--ink-600); }
+.type-row:last-child { border-bottom: none; }
+.tr-label { font-family: var(--font-display); font-weight: 700; font-size: 12px; color: var(--ink-soft); }
+.tr-label span { display: block; font-family: var(--font-mono); font-weight: 500; font-size: 11px; color: var(--ink-soft); opacity: .75; margin-top: 5px; line-height: 1.5; }
+.ty-display  { font-family: var(--font-display); font-weight: 900; font-size: 54px; letter-spacing: -.04em; line-height: .95; color: var(--cream); }
+.ty-h1       { font-family: var(--font-display); font-weight: 800; font-size: 38px; letter-spacing: -.03em; line-height: 1; color: var(--cream); }
+.ty-h2       { font-family: var(--font-display); font-weight: 700; font-size: 28px; letter-spacing: -.02em; color: var(--cream); }
+.ty-lead     { font-family: var(--font-display); font-weight: 600; font-size: 22px; color: var(--cream); }
+.ty-body     { font-family: var(--font-body); font-weight: 400; font-size: 18px; line-height: 1.65; color: rgba(244,239,230,.8); max-width: 54ch; }
+.ty-caption  { font-family: var(--font-body); font-weight: 500; font-size: 14px; color: var(--ink-soft); }
+.ty-kick     { font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--signal-lime); }
+.font-note   { background: var(--ink-800); border: 1.5px solid var(--ink-600); border-radius: var(--r-md); padding: 18px 22px; margin-top: 20px; display: flex; align-items: flex-start; gap: 14px; }
+.font-note-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.font-note p { margin: 0; font-size: 14px; line-height: 1.65; color: rgba(244,239,230,.65); }
+.font-note strong { color: var(--cream); }
+
+/* ---- Logo section ---- */
+.logo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.logo-panel {
+  border-radius: var(--r-lg);
+  padding: 48px 36px;
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  position: relative;
+}
+.lp-dark  { background: var(--ink-navy); border: 1.5px solid var(--ink-600); }
+.lp-blue  { background: var(--legend-blue); }
+.lp-cream { background: var(--cream); }
+.lp-lime  { background: var(--signal-lime); }
+.lp-white { background: var(--white); border: 1.5px solid var(--cream-200); }
+.logo-panel .lp-tag {
+  position: absolute; top: 14px; left: 18px;
+  font-family: var(--font-display); font-weight: 700; font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+}
+.on-dark-tag { color: rgba(244,239,230,.4); }
+.on-light-tag { color: rgba(14,16,22,.4); }
+.logo-cap { font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--ink-soft); margin-top: 12px; text-align: center; line-height: 1.45; }
+.logo-cap .variant { font-family: var(--font-mono); font-size: 11px; display: block; color: var(--signal-lime); margin-top: 4px; }
+.badge-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+.badge-cell { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.badge-bg { width: 80px; height: 80px; border-radius: 20px; display: grid; place-items: center; }
+.badge-label { font-family: var(--font-mono); font-size: 10px; color: var(--ink-soft); text-align: center; line-height: 1.5; }
+
+/* ---- Components ---- */
+.comp-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--r-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+  text-decoration: none;
+  line-height: 1;
+  padding: 16px 28px;
+  font-size: 17px;
+}
+.btn-lime { background: var(--signal-lime); color: var(--ink-navy); box-shadow: var(--shadow-lime); }
+.btn-blue { background: var(--legend-blue); color: var(--white); box-shadow: var(--shadow-blue); }
+.btn-ghost { background: transparent; color: var(--cream); border: 2px solid var(--ink-600); }
+.btn-sm  { padding: 12px 20px; font-size: 14px; }
+.btn-lg  { padding: 22px 38px; font-size: 20px; }
+.comp-card { background: var(--ink-700); border: 1.5px solid var(--ink-600); border-radius: var(--r-lg); padding: 32px; }
+.comp-label { font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--signal-lime); margin: 0 0 18px; }
+.radius-demo { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+.rad-box { background: var(--legend-blue); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 10px; }
+.rad-box span { font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,.65); }
+.shadow-demo { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+.shad-box { background: var(--ink-800); border-radius: var(--r-md); padding: 22px 16px; text-align: center; }
+.shad-box .swatch { width: 56px; height: 56px; border-radius: var(--r-md); background: var(--white); margin: 0 auto 12px; }
+.shad-box .swatch.blue { background: var(--legend-blue); }
+.shad-box .swatch.lime { background: var(--signal-lime); }
+.shad-box span { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); }
+
+/* ---- Score App section ---- */
+.spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.spec-card { background: var(--ink-700); border: 1.5px solid var(--ink-600); border-radius: var(--r-lg); padding: 30px 32px; }
+.spec-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: -.015em; color: var(--cream); margin: 0 0 16px; }
+.spec-card ul { margin: 0; padding: 0 0 0 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.spec-card li { font-size: 14.5px; line-height: 1.55; color: rgba(244,239,230,.75); display: flex; gap: 10px; }
+.spec-card li::before { content: "→"; color: var(--signal-lime); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.spec-card li strong { color: var(--cream); font-family: var(--font-display); }
+
+/* ---- Voice section ---- */
+.voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.voice-card { border-radius: var(--r-md); padding: 22px 24px; }
+.voice-do  { background: rgba(46,158,79,.12); border: 1.5px solid rgba(46,158,79,.3); }
+.voice-dont{ background: rgba(229,72,77,.1);  border: 1.5px solid rgba(229,72,77,.25); }
+.voice-card .vmark { font-family: var(--font-display); font-weight: 800; font-size: 13px; letter-spacing: .04em; margin: 0 0 10px; }
+.voice-do   .vmark { color: #4FC96A; }
+.voice-dont .vmark { color: #F27171; }
+.voice-card p { margin: 0; font-size: 14.5px; line-height: 1.6; color: rgba(244,239,230,.75); }
+.voice-card p strong { color: var(--cream); }
+.sample-lines { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+.sample-line { background: var(--ink-700); border-left: 4px solid var(--signal-lime); border-radius: 0 var(--r-sm) var(--r-sm) 0; padding: 14px 18px; font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--cream); line-height: 1.4; }
+
+/* ---- Guardrails ---- */
+.rail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.rail { background: var(--ink-700); border: 1.5px solid var(--ink-600); border-radius: var(--r-md); padding: 20px 22px; }
+.rail .icon { font-size: 22px; margin-bottom: 10px; }
+.rail h4 { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--cream); margin: 0 0 6px; }
+.rail p { margin: 0; font-size: 13px; color: rgba(244,239,230,.6); line-height: 1.55; }
+
+/* ---- TOC ---- */
+.toc { background: var(--ink-700); border: 1.5px solid var(--ink-600); border-radius: var(--r-lg); padding: 32px 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 40px; }
+.toc a { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: rgba(244,239,230,.6); text-decoration: none; padding: 8px 0; border-bottom: 1.5px solid var(--ink-600); display: flex; align-items: center; gap: 10px; transition: color .15s; }
+.toc a:hover { color: var(--signal-lime); }
+.toc a .n { color: var(--signal-lime); font-family: var(--font-mono); font-size: 11px; min-width: 22px; }
+
+/* ---- Two-col layouts ---- */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+
+/* ---- Divider label ---- */
+.divider { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.divider span { font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--ink-600); }
+
+/* ---- Pin demo ---- */
+.pin-demo-row { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+.pin-demo-cell { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.pin-demo-cell .pd-label { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); text-align: center; }
+
+/* ---- Footer ---- */
+.footer { padding: 48px 0 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+.footer-brand { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: rgba(244,239,230,.4); }
+.footer-date  { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); }
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .doc { padding: 0 22px 80px; }
+  .swatches { grid-template-columns: 1fr 1fr; }
+  .type-row { grid-template-columns: 120px 1fr; }
+  .logo-grid, .spec-grid, .two-col { grid-template-columns: 1fr; }
+  .badge-grid { grid-template-columns: repeat(3,1fr); }
+  .rail-grid { grid-template-columns: 1fr 1fr; }
+  .support-grid { grid-template-columns: repeat(4,1fr); }
+  .contrast-row { grid-template-columns: 1fr 1fr; }
+  .toc { grid-template-columns: 1fr; }
+  .cover h1 { font-size: clamp(36px,8vw,60px); }
+  .cover-top { flex-direction: column; }
+  .cover-meta { text-align: left; }
+  .section.light { margin: 0 -22px; padding: 60px 22px; }
+  .voice-grid { grid-template-columns: 1fr; }
+  .three-col { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="doc">
+    <div class="cover-inner">
+      <div class="cover-top">
+        <div>
+          <p class="doc-label">Visual Identity Handoff — For AI Builder</p>
+          <h1>Local <em>Legend</em><br>Brand System</h1>
+          <p class="cover-sub">Everything needed to build on-brand: colors, fonts, logo components, UI patterns, copy voice, and a full spec for the Realtor Visibility Score App page.</p>
+          <div class="cover-tags">
+            <span class="tag-pill blue">v1 · June 2026</span>
+            <span class="tag-pill lime">Score App Ready</span>
+            <span class="tag-pill">locallegend.studio</span>
+            <span class="tag-pill">@local_legend_yvr</span>
+          </div>
+        </div>
+        <div class="cover-meta">
+          <strong>Local Legend</strong>
+          Done-for-you short-form video studio<br>
+          First market: Vancouver (YVR)<br>
+          First niche: Residential realtors<br><br>
+          Prepared for:<br>Back To Claude Works
+        </div>
+      </div>
+
+      <!-- Quick TOC -->
+      <nav class="toc">
+        <a href="#colors"><span class="n">01</span> Color Palette &amp; Tokens</a>
+        <a href="#logo"><span class="n">04</span> Logo System &amp; Components</a>
+        <a href="#type"><span class="n">02</span> Typography</a>
+        <a href="#components"><span class="n">05</span> UI Components</a>
+        <a href="#loading"><span class="n">03</span> How to Load the Brand</a>
+        <a href="#voice"><span class="n">06</span> Voice &amp; Copy Rules</a>
+        <a href="#scoreapp"><span class="n">07</span> Score App Page Spec</a>
+        <a href="#guardrails"><span class="n">08</span> Guardrails</a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="doc">
+
+<!-- ════════════════════════════════════════
+     01 · COLOR PALETTE
+════════════════════════════════════════ -->
+<section class="section" id="colors">
+  <div class="sec-head">
+    <span class="sec-num on-dark">01</span>
+    <div>
+      <h2 class="sec-title">Color Palette</h2>
+      <p class="sec-note">Five locked colors. High contrast is mandatory — the brand lives on a feed and on video. Lime is a pop, never a background.</p>
+    </div>
+  </div>
+
+  <!-- Primary 5 -->
+  <div class="swatches">
+    <div class="sw">
+      <div class="chip" style="background:var(--legend-blue)">
+        <span class="chip-badge" style="background:var(--white);color:var(--legend-blue)">Primary</span>
+      </div>
+      <div class="info">
+        <p class="nm">Legend Blue</p>
+        <span class="hex">#3B6BFF</span>
+        <div class="tok">--legend-blue</div>
+        <p class="role">The shield and the primary brand color. Confident, modern, trustworthy. Use for CTAs, active states, badges.</p>
+      </div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:var(--signal-lime)">
+        <span class="chip-badge" style="background:var(--ink-navy);color:var(--signal-lime)">Accent</span>
+      </div>
+      <div class="info">
+        <p class="nm">Signal Lime</p>
+        <span class="hex">#C6F042</span>
+        <div class="tok">--signal-lime</div>
+        <p class="role">The pin, links, highlights, CTAs. Use sparingly as a pop. Never use as a page background.</p>
+      </div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:var(--ink-navy)">
+        <span class="chip-badge" style="background:var(--cream);color:var(--ink-navy)">Dark base</span>
+      </div>
+      <div class="info">
+        <p class="nm">Ink Navy</p>
+        <span class="hex">#0E1016</span>
+        <div class="tok">--ink-navy</div>
+        <p class="role">Primary background for dark surfaces. Primary text on light. The deepest tone in the system.</p>
+      </div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:var(--cream); border-bottom: 1px solid var(--cream-200)">
+        <span class="chip-badge" style="background:var(--ink-navy);color:var(--cream)">Warm light</span>
+      </div>
+      <div class="info">
+        <p class="nm">Cream</p>
+        <span class="hex">#F4EFE6</span>
+        <div class="tok">--cream</div>
+        <p class="role">Star and LL inside the badge. Warm page backgrounds. Body text on dark surfaces.</p>
+      </div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:var(--white); border-bottom: 1px solid var(--cream-200)">
+        <span class="chip-badge" style="background:var(--ink-navy);color:var(--white)">Clean</span>
+      </div>
+      <div class="info">
+        <p class="nm">Pure White</p>
+        <span class="hex">#FFFFFF</span>
+        <div class="tok">--white</div>
+        <p class="role">Wordmark on dark, cards on light, breathing room, clean text surfaces.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supporting tints -->
+  <div class="divider" style="margin-top:32px"><span>Supporting tints (derived, never new hues)</span></div>
+  <div class="support-grid">
+    <div class="sup-sw">
+      <div class="schip" style="background:var(--blue-700)"></div>
+      <div class="sinfo"><p class="snm">Blue 700</p><span class="shex">#2A52D6 · --blue-700</span></div>
+    </div>
+    <div class="sup-sw">
+      <div class="schip" style="background:var(--blue-100)"></div>
+      <div class="sinfo"><p class="snm">Blue 100</p><span class="shex">#DCE5FF · --blue-100</span></div>
+    </div>
+    <div class="sup-sw">
+      <div class="schip" style="background:var(--ink-800)"></div>
+      <div class="sinfo"><p class="snm">Ink 800</p><span class="shex">#15181F · --ink-800</span></div>
+    </div>
+    <div class="sup-sw">
+      <div class="schip" style="background:var(--ink-700)"></div>
+      <div class="sinfo"><p class="snm">Ink 700</p><span class="shex">#1D212B · --ink-700</span></div>
+    </div>
+    <div class="sup-sw">
+      <div class="schip" style="background:var(--ink-600)"></div>
+      <div class="sinfo"><p class="snm">Ink 600</p><span class="shex">#2A2F3B · --ink-600</span></div>
+    </div>
+    <div class="sup-sw">
+      <div class="schip" style="background:var(--cream-200); border: 1px solid #d0c8b8"></div>
+      <div class="sinfo"><p class="snm">Cream 200</p><span class="shex">#E7DFD0 · --cream-200</span></div>
+    </div>
+    <div class="sup-sw">
+      <div class="schip" style="background:var(--ink-soft)"></div>
+      <div class="sinfo"><p class="snm">Ink Soft</p><span class="shex">#5A6072 · --ink-soft</span></div>
+    </div>
+    <div class="sup-sw">
+      <div class="schip" style="background: linear-gradient(135deg, var(--legend-blue), var(--blue-700))"></div>
+      <div class="sinfo"><p class="snm">Gradient</p><span class="shex">Blue → Blue 700</span></div>
+    </div>
+  </div>
+
+  <!-- Contrast pairs -->
+  <div class="divider" style="margin-top:32px"><span>Accessible pairs</span></div>
+  <div class="contrast-row">
+    <div class="cpair" style="background:var(--ink-navy);color:var(--cream)">Cream on Ink<small>AAA · ≥7:1</small></div>
+    <div class="cpair" style="background:var(--legend-blue);color:var(--white)">White on Blue<small>AA large · ≥3:1</small></div>
+    <div class="cpair" style="background:var(--signal-lime);color:var(--ink-navy)">Ink on Lime<small>AAA · ≥7:1</small></div>
+    <div class="cpair" style="background:var(--cream);color:var(--ink-navy);border:1.5px solid var(--cream-200)">Ink on Cream<small>AAA · ≥7:1</small></div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     02 · TYPOGRAPHY
+════════════════════════════════════════ -->
+<section class="section" id="type">
+  <div class="sec-head">
+    <span class="sec-num on-dark">02</span>
+    <div>
+      <h2 class="sec-title">Typography</h2>
+      <p class="sec-note">Two fonts only. Poppins for everything display and UI. Inter for long-form body. Always large and legible. Never tiny type.</p>
+    </div>
+  </div>
+
+  <div class="type-block">
+    <div class="type-row">
+      <div class="tr-label">Display<span>Poppins 900<br>-0.04em tracking<br>0.93 line-height</span></div>
+      <div class="ty-display">Become the legend of your local.</div>
+    </div>
+    <div class="type-row">
+      <div class="tr-label">Headline H1<span>Poppins 800<br>-0.03em tracking<br>Use for page &lt;h1&gt;</span></div>
+      <div class="ty-h1">Is your brand actually visible?</div>
+    </div>
+    <div class="type-row">
+      <div class="tr-label">Headline H2<span>Poppins 700<br>-0.02em tracking</span></div>
+      <div class="ty-h2">You film nothing. You become the name.</div>
+    </div>
+    <div class="type-row">
+      <div class="tr-label">Kicker<span>Poppins 700<br>+0.16em tracking<br>ALL CAPS</span></div>
+      <div class="ty-kick">One agent per area · Vancouver</div>
+    </div>
+    <div class="type-row">
+      <div class="tr-label">Lead / Subhead<span>Poppins 600<br>Regular tracking</span></div>
+      <div class="ty-lead">Big-brand video, minus the budget and the tripod you never use.</div>
+    </div>
+    <div class="type-row">
+      <div class="tr-label">Body<span>Inter 400<br>18px minimum<br>1.65 line-height</span></div>
+      <div class="ty-body">A premium creative studio that turns the best operator in an area into its recognized name. We write, produce, and deliver a steady stream of branded short videos, so you just post.</div>
+    </div>
+    <div class="type-row">
+      <div class="tr-label">Caption / Label<span>Inter 500<br>14px min</span></div>
+      <div class="ty-caption">Two minutes. Instant report. No spam.</div>
+    </div>
+  </div>
+
+  <div class="font-note">
+    <span class="font-note-icon">→</span>
+    <p><strong>Google Fonts import:</strong> Load both families at the top of any page.<br>
+    <code style="font-family:var(--font-mono);font-size:12px;color:var(--signal-lime)">&lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"&gt;</code><br>
+    <strong>Display variable:</strong> <code style="font-family:var(--font-mono);font-size:12px;color:var(--signal-lime)">--font-display: "Poppins", system-ui, sans-serif</code><br>
+    <strong>Body variable:</strong> <code style="font-family:var(--font-mono);font-size:12px;color:var(--signal-lime)">--font-body: "Inter", system-ui, sans-serif</code></p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     03 · HOW TO LOAD THE BRAND
+════════════════════════════════════════ -->
+<section class="section" id="loading">
+  <div class="sec-head">
+    <span class="sec-num on-dark">03</span>
+    <div>
+      <h2 class="sec-title">How to Load the Brand</h2>
+      <p class="sec-note">Two files give you the full system. Load them in this order in every page &lt;head&gt;.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <p style="font-family:var(--font-display);font-weight:700;font-size:13px;color:var(--signal-lime);letter-spacing:.1em;text-transform:uppercase;margin:0 0 12px">HTML head — required load order</p>
+      <pre class="code-block"><span class="c-com">&lt;!-- 1. Google Fonts --&gt;</span>
+<span class="c-tag">&lt;link</span> <span class="c-attr">rel</span>=<span class="c-str">"preconnect"</span> <span class="c-attr">href</span>=<span class="c-str">"https://fonts.googleapis.com"</span><span class="c-tag">&gt;</span>
+<span class="c-tag">&lt;link</span> <span class="c-attr">href</span>=<span class="c-str">"https://fonts.googleapis.com/css2?
+  family=Poppins:wght@500;600;700;800;900
+  &amp;family=Inter:wght@400;500;600;700
+  &amp;display=swap"</span> <span class="c-attr">rel</span>=<span class="c-str">"stylesheet"</span><span class="c-tag">&gt;</span>
+
+<span class="c-com">&lt;!-- 2. Brand CSS tokens + base styles --&gt;</span>
+<span class="c-tag">&lt;link</span> <span class="c-attr">rel</span>=<span class="c-str">"stylesheet"</span> <span class="c-attr">href</span>=<span class="c-str">"brand/brand.css"</span><span class="c-tag">&gt;</span>
+
+<span class="c-com">&lt;!-- 3. Logo web components (before &lt;/body&gt;) --&gt;</span>
+<span class="c-tag">&lt;script</span> <span class="c-attr">src</span>=<span class="c-str">"brand/logo.js"</span><span class="c-tag">&gt;&lt;/script&gt;</span></pre>
+    </div>
+    <div>
+      <p style="font-family:var(--font-display);font-weight:700;font-size:13px;color:var(--signal-lime);letter-spacing:.1em;text-transform:uppercase;margin:0 0 12px">Complete CSS token reference</p>
+      <pre class="code-block"><span class="c-kw">:root</span> {
+  <span class="c-com">/* Core palette */</span>
+  <span class="c-prop">--legend-blue</span>: <span class="c-val">#3B6BFF</span>;
+  <span class="c-prop">--signal-lime</span>: <span class="c-val">#C6F042</span>;
+  <span class="c-prop">--ink-navy</span>:    <span class="c-val">#0E1016</span>;
+  <span class="c-prop">--cream</span>:       <span class="c-val">#F4EFE6</span>;
+  <span class="c-prop">--white</span>:       <span class="c-val">#FFFFFF</span>;
+
+  <span class="c-com">/* Tints */</span>
+  <span class="c-prop">--blue-700</span>:  <span class="c-val">#2A52D6</span>;
+  <span class="c-prop">--blue-100</span>:  <span class="c-val">#DCE5FF</span>;
+  <span class="c-prop">--ink-800</span>:   <span class="c-val">#15181F</span>;
+  <span class="c-prop">--ink-700</span>:   <span class="c-val">#1D212B</span>;
+  <span class="c-prop">--ink-600</span>:   <span class="c-val">#2A2F3B</span>;
+  <span class="c-prop">--cream-200</span>: <span class="c-val">#E7DFD0</span>;
+  <span class="c-prop">--ink-soft</span>:  <span class="c-val">#5A6072</span>;
+
+  <span class="c-com">/* Fonts */</span>
+  <span class="c-prop">--font-display</span>: <span class="c-str">"Poppins"</span>, system-ui, sans-serif;
+  <span class="c-prop">--font-body</span>:    <span class="c-str">"Inter"</span>, system-ui, sans-serif;
+
+  <span class="c-com">/* Radii */</span>
+  <span class="c-prop">--r-sm</span>: <span class="c-val">12px</span>;  <span class="c-prop">--r-md</span>: <span class="c-val">20px</span>;
+  <span class="c-prop">--r-lg</span>: <span class="c-val">32px</span>;  <span class="c-prop">--r-xl</span>: <span class="c-val">44px</span>;
+  <span class="c-prop">--r-pill</span>: <span class="c-val">999px</span>;
+
+  <span class="c-com">/* Shadows */</span>
+  <span class="c-prop">--shadow-sm</span>:   <span class="c-val">0 4px 14px rgba(14,16,22,.10)</span>;
+  <span class="c-prop">--shadow-md</span>:   <span class="c-val">0 14px 40px rgba(14,16,22,.16)</span>;
+  <span class="c-prop">--shadow-blue</span>: <span class="c-val">0 18px 48px rgba(59,107,255,.34)</span>;
+  <span class="c-prop">--shadow-lime</span>: <span class="c-val">0 12px 34px rgba(198,240,66,.40)</span>;
+}</pre>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     04 · LOGO SYSTEM
+════════════════════════════════════════ -->
+<section class="section" id="logo">
+  <div class="sec-head">
+    <span class="sec-num on-dark">04</span>
+    <div>
+      <h2 class="sec-title">Logo System</h2>
+      <p class="sec-note">Four web components from <code style="font-family:var(--font-mono);color:var(--signal-lime);font-size:13px">brand/logo.js</code>. Size with CSS — the SVG scales fluidly.</p>
+    </div>
+  </div>
+
+  <!-- Components overview -->
+  <div class="divider"><span>Primary horizontal lockup — default</span></div>
+  <div class="logo-grid" style="margin-bottom:24px">
+    <div>
+      <div class="logo-panel lp-dark">
+        <span class="lp-tag on-dark-tag">On Ink (dark)</span>
+        <ll-lockup type="horizontal" theme="dark" url style="font-size:42px"></ll-lockup>
+      </div>
+      <p class="logo-cap">Primary · dark surfaces<span class="variant">theme="dark" url</span></p>
+    </div>
+    <div>
+      <div class="logo-panel lp-white">
+        <span class="lp-tag on-light-tag">On White</span>
+        <ll-lockup type="horizontal" theme="light" url style="font-size:42px"></ll-lockup>
+      </div>
+      <p class="logo-cap">On white / light<span class="variant">theme="light" url</span></p>
+    </div>
+    <div>
+      <div class="logo-panel lp-cream">
+        <span class="lp-tag on-light-tag">On Cream</span>
+        <ll-lockup type="horizontal" theme="cream" url style="font-size:42px"></ll-lockup>
+      </div>
+      <p class="logo-cap">On cream background<span class="variant">theme="cream" url</span></p>
+    </div>
+  </div>
+
+  <div class="divider"><span>Stacked lockup</span></div>
+  <div class="logo-grid" style="margin-bottom:24px">
+    <div>
+      <div class="logo-panel lp-dark" style="min-height:280px">
+        <span class="lp-tag on-dark-tag">Stacked · dark</span>
+        <ll-lockup type="stacked" theme="dark" style="font-size:48px"></ll-lockup>
+      </div>
+      <p class="logo-cap">Square spaces, profile headers<span class="variant">type="stacked" theme="dark"</span></p>
+    </div>
+    <div>
+      <div class="logo-panel lp-cream" style="min-height:280px">
+        <span class="lp-tag on-light-tag">Stacked · cream</span>
+        <ll-lockup type="stacked" theme="cream" style="font-size:48px"></ll-lockup>
+      </div>
+      <p class="logo-cap">Light surface variant<span class="variant">type="stacked" theme="cream"</span></p>
+    </div>
+    <div>
+      <div class="logo-panel lp-blue" style="min-height:280px">
+        <span class="lp-tag on-dark-tag">Stacked · blue</span>
+        <ll-lockup type="stacked" theme="dark" style="font-size:48px"></ll-lockup>
+      </div>
+      <p class="logo-cap">On blue surfaces<span class="variant">type="stacked" theme="dark"</span></p>
+    </div>
+  </div>
+
+  <div class="divider"><span>Badge variants — &lt;ll-badge variant="…"&gt;</span></div>
+  <div class="badge-grid">
+    <div class="badge-cell">
+      <div class="badge-bg" style="background:var(--ink-navy);border:1.5px solid var(--ink-600)">
+        <ll-badge variant="blue" style="width:52px;height:66px"></ll-badge>
+      </div>
+      <span class="badge-label">blue<br>(default)</span>
+    </div>
+    <div class="badge-cell">
+      <div class="badge-bg" style="background:var(--ink-navy);border:1.5px solid var(--ink-600)">
+        <ll-badge variant="blue-white" style="width:52px;height:66px"></ll-badge>
+      </div>
+      <span class="badge-label">blue-white</span>
+    </div>
+    <div class="badge-cell">
+      <div class="badge-bg" style="background:var(--ink-navy);border:1.5px solid var(--ink-600)">
+        <ll-badge variant="lime-ink" style="width:52px;height:66px"></ll-badge>
+      </div>
+      <span class="badge-label">lime-ink</span>
+    </div>
+    <div class="badge-cell">
+      <div class="badge-bg" style="background:var(--legend-blue)">
+        <ll-badge variant="ink-lime" style="width:52px;height:66px"></ll-badge>
+      </div>
+      <span class="badge-label">ink-lime<br>on blue bg</span>
+    </div>
+    <div class="badge-cell">
+      <div class="badge-bg" style="background:var(--cream)">
+        <ll-badge variant="ink-cream" style="width:52px;height:66px"></ll-badge>
+      </div>
+      <span class="badge-label">ink-cream<br>on cream bg</span>
+    </div>
+    <div class="badge-cell">
+      <div class="badge-bg" style="background:var(--ink-navy);border:1.5px solid var(--ink-600)">
+        <ll-badge variant="cream" style="width:52px;height:66px"></ll-badge>
+      </div>
+      <span class="badge-label">cream<br>(monochrome)</span>
+    </div>
+  </div>
+
+  <!-- Pin motif -->
+  <div class="divider" style="margin-top:32px"><span>The pin motif — &lt;ll-pin&gt;</span></div>
+  <div style="background:var(--ink-700);border:1.5px solid var(--ink-600);border-radius:var(--r-lg);padding:32px 36px">
+    <p style="font-size:15px;color:rgba(244,239,230,.7);margin:0 0 24px;line-height:1.6">The lime location pin is the brand's secondary mark. Pin = local, star = legend. Drop it where the badge is too much. Use as list bullets, beside the URL, as a map marker in graphics.</p>
+    <div class="pin-demo-row">
+      <div class="pin-demo-cell">
+        <ll-pin star="ink" style="width:64px;height:77px;filter:drop-shadow(0 10px 20px rgba(198,240,66,.35))"></ll-pin>
+        <span class="pd-label">Default<br>star="ink"</span>
+      </div>
+      <div class="pin-demo-cell">
+        <ll-pin star="white" style="width:64px;height:77px"></ll-pin>
+        <span class="pd-label">star="white"</span>
+      </div>
+      <div class="pin-demo-cell" style="background:var(--cream);padding:16px;border-radius:12px">
+        <ll-pin star="ink" style="width:44px;height:53px"></ll-pin>
+        <span class="pd-label" style="color:var(--ink-soft)">On cream</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;justify-content:center">
+        <span style="display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--cream)">
+          <ll-pin star="ink" style="width:16px;height:20px"></ll-pin> As a list bullet
+        </span>
+        <span style="display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--cream)">
+          <ll-pin star="ink" style="width:16px;height:20px"></ll-pin> See your visibility score
+        </span>
+        <span style="display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--cream)">
+          <ll-pin star="ink" style="width:16px;height:20px"></ll-pin> Built for your farm area
+        </span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:16px;color:rgba(244,239,230,.8)">
+        <ll-pin star="ink" style="width:14px;height:17px"></ll-pin>
+        <span>locallegend.studio</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logo API code reference -->
+  <div class="divider" style="margin-top:32px"><span>Component API</span></div>
+  <div class="two-col">
+    <pre class="code-block"><span class="c-com">&lt;!-- Badge — all variant options --&gt;</span>
+<span class="c-tag">&lt;ll-badge</span> <span class="c-attr">variant</span>=<span class="c-str">"blue"</span><span class="c-tag">&gt;&lt;/ll-badge&gt;</span>       <span class="c-com">default</span>
+<span class="c-tag">&lt;ll-badge</span> <span class="c-attr">variant</span>=<span class="c-str">"blue-white"</span><span class="c-tag">&gt;&lt;/ll-badge&gt;</span>
+<span class="c-tag">&lt;ll-badge</span> <span class="c-attr">variant</span>=<span class="c-str">"lime-ink"</span><span class="c-tag">&gt;&lt;/ll-badge&gt;</span>
+<span class="c-tag">&lt;ll-badge</span> <span class="c-attr">variant</span>=<span class="c-str">"ink-lime"</span><span class="c-tag">&gt;&lt;/ll-badge&gt;</span>
+<span class="c-tag">&lt;ll-badge</span> <span class="c-attr">variant</span>=<span class="c-str">"ink-cream"</span><span class="c-tag">&gt;&lt;/ll-badge&gt;</span>
+<span class="c-tag">&lt;ll-badge</span> <span class="c-attr">variant</span>=<span class="c-str">"cream"</span><span class="c-tag">&gt;&lt;/ll-badge&gt;</span>      <span class="c-com">mono</span>
+
+<span class="c-com">&lt;!-- Size via CSS --&gt;</span>
+<span class="c-tag">&lt;ll-badge</span> <span class="c-attr">style</span>=<span class="c-str">"width:40px;height:51px"</span><span class="c-tag">&gt;&lt;/ll-badge&gt;</span>
+<span class="c-com">&lt;!-- aspect ratio is always 40:51 --&gt;</span>
+
+<span class="c-com">&lt;!-- Pin --&gt;</span>
+<span class="c-tag">&lt;ll-pin</span> <span class="c-attr">star</span>=<span class="c-str">"ink"</span><span class="c-tag">&gt;&lt;/ll-pin&gt;</span>
+<span class="c-tag">&lt;ll-pin</span> <span class="c-attr">star</span>=<span class="c-str">"white"</span><span class="c-tag">&gt;&lt;/ll-pin&gt;</span>
+<span class="c-com">&lt;!-- aspect ratio 120:145 --&gt;</span></pre>
+
+    <pre class="code-block"><span class="c-com">&lt;!-- Wordmark only --&gt;</span>
+<span class="c-tag">&lt;ll-wordmark</span> <span class="c-attr">color</span>=<span class="c-str">"white"</span><span class="c-tag">&gt;&lt;/ll-wordmark&gt;</span>
+<span class="c-tag">&lt;ll-wordmark</span> <span class="c-attr">color</span>=<span class="c-str">"cream"</span><span class="c-tag">&gt;&lt;/ll-wordmark&gt;</span>
+<span class="c-tag">&lt;ll-wordmark</span> <span class="c-attr">color</span>=<span class="c-str">"ink"</span><span class="c-tag">&gt;&lt;/ll-wordmark&gt;</span>
+<span class="c-tag">&lt;ll-wordmark</span> <span class="c-attr">color</span>=<span class="c-str">"blue"</span><span class="c-tag">&gt;&lt;/ll-wordmark&gt;</span>
+
+<span class="c-com">&lt;!-- Full lockup --&gt;</span>
+<span class="c-tag">&lt;ll-lockup</span>
+  <span class="c-attr">type</span>=<span class="c-str">"horizontal"</span> <span class="c-com">| stacked | icon</span>
+  <span class="c-attr">theme</span>=<span class="c-str">"dark"</span>       <span class="c-com">| light | cream</span>
+  <span class="c-attr">url</span>               <span class="c-com">(boolean, shows URL)</span>
+  <span class="c-attr">style</span>=<span class="c-str">"font-size:44px"</span>
+<span class="c-tag">&gt;&lt;/ll-lockup&gt;</span>
+
+<span class="c-com">&lt;!-- Sizing tip: font-size drives scale --&gt;</span>
+<span class="c-com">&lt;!-- 32px = small nav · 44px = standard --&gt;</span>
+<span class="c-com">&lt;!-- 56px+ = large hero / centered       --&gt;</span></pre>
+  </div>
+
+  <!-- Logo rules -->
+  <div class="divider" style="margin-top:28px"><span>Logo usage rules</span></div>
+  <div class="three-col">
+    <div class="rail">
+      <div class="icon">✗</div>
+      <h4>No all-caps wordmark</h4>
+      <p>Always "Local Legend" title case. Never LOCAL LEGEND. The wordmark is set at the component level — do not override its text transform.</p>
+    </div>
+    <div class="rail">
+      <div class="icon">✗</div>
+      <h4>Shield stays Legend Blue</h4>
+      <p>Shield = blue, or ink on blue surfaces. Lime lives on the star and pin only. Never put lime on the shield in standard use.</p>
+    </div>
+    <div class="rail">
+      <div class="icon">✗</div>
+      <h4>No stretching or harsh shadows</h4>
+      <p>Soft and rounded, never distorted. No drop shadows applied inside the mark itself. No recoloring the star or LL.</p>
+    </div>
+    <div class="rail">
+      <div class="icon">→</div>
+      <h4>Clear space = X</h4>
+      <p>Keep a margin equal to the badge star height on all four sides. Nothing intrudes into this zone.</p>
+    </div>
+    <div class="rail">
+      <div class="icon">→</div>
+      <h4>Minimum sizes</h4>
+      <p>Horizontal lockup: 160px wide minimum. Icon badge: 32px minimum. Favicon use: 16px. Below these sizes, legibility breaks.</p>
+    </div>
+    <div class="rail">
+      <div class="icon">→</div>
+      <h4>Video bug placement</h4>
+      <p>Use a 42×42px rounded-square tile (border-radius: 12px) in Legend Blue, with ink-lime badge inside. Top-left corner of video frames.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     05 · UI COMPONENTS
+════════════════════════════════════════ -->
+<section class="section" id="components">
+  <div class="sec-head">
+    <span class="sec-num on-dark">05</span>
+    <div>
+      <h2 class="sec-title">UI Components</h2>
+      <p class="sec-note">Soft, rounded, bold. Every interactive element follows the pill-and-rounded system. No sharp corners anywhere.</p>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <p class="comp-label">Buttons</p>
+    <div class="comp-row" style="margin-bottom:24px">
+      <button class="btn btn-lime btn-lg">Get my free visibility score</button>
+      <button class="btn btn-blue btn-lg">Book a call</button>
+      <button class="btn btn-ghost">Learn more</button>
+    </div>
+    <div class="comp-row">
+      <button class="btn btn-lime">CTA default</button>
+      <button class="btn btn-blue">Primary action</button>
+      <button class="btn btn-lime btn-sm">Small lime</button>
+      <button class="btn btn-blue btn-sm">Small blue</button>
+    </div>
+  </div>
+
+  <pre class="code-block" style="margin-top:16px"><span class="c-com">/* Button base — from brand.css */</span>
+<span class="c-kw">.btn</span> {
+  <span class="c-prop">font-family</span>: <span class="c-val">var(--font-display)</span>;
+  <span class="c-prop">font-weight</span>: <span class="c-val">700</span>;
+  <span class="c-prop">border-radius</span>: <span class="c-val">var(--r-pill)</span>; <span class="c-com">/* always pill */</span>
+  <span class="c-prop">border</span>: <span class="c-val">none</span>;
+  <span class="c-prop">display</span>: <span class="c-val">inline-flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">center</span>;
+  <span class="c-prop">gap</span>: <span class="c-val">.6em</span>;
+  <span class="c-prop">transition</span>: <span class="c-val">transform .15s ease, box-shadow .2s ease</span>;
+}
+<span class="c-kw">.btn-lime</span> { <span class="c-prop">background</span>: <span class="c-val">var(--signal-lime)</span>; <span class="c-prop">color</span>: <span class="c-val">var(--ink-navy)</span>; <span class="c-prop">box-shadow</span>: <span class="c-val">var(--shadow-lime)</span>; }
+<span class="c-kw">.btn-blue</span> { <span class="c-prop">background</span>: <span class="c-val">var(--legend-blue)</span>; <span class="c-prop">color</span>: <span class="c-val">var(--white)</span>;    <span class="c-prop">box-shadow</span>: <span class="c-val">var(--shadow-blue)</span>; }
+<span class="c-com">/* Size modifiers: .btn-sm (12px/14px) · .btn-lg (22px/20px) */</span></pre>
+
+  <div class="two-col" style="margin-top:24px">
+    <div class="comp-card">
+      <p class="comp-label">Border radii</p>
+      <div class="radius-demo">
+        <div class="rad-box" style="width:60px;height:60px;border-radius:var(--r-sm)"><span>r-sm<br>12px</span></div>
+        <div class="rad-box" style="width:72px;height:72px;border-radius:var(--r-md)"><span>r-md<br>20px</span></div>
+        <div class="rad-box" style="width:86px;height:86px;border-radius:var(--r-lg)"><span>r-lg<br>32px</span></div>
+        <div class="rad-box" style="width:100px;height:100px;border-radius:var(--r-xl)"><span>r-xl<br>44px</span></div>
+        <div class="rad-box" style="width:100px;height:48px;border-radius:var(--r-pill)"><span>r-pill<br>999px</span></div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <p class="comp-label">Shadows</p>
+      <div class="shadow-demo">
+        <div class="shad-box">
+          <div class="swatch" style="box-shadow:var(--shadow-sm)"></div>
+          <span>shadow-sm</span>
+        </div>
+        <div class="shad-box">
+          <div class="swatch" style="box-shadow:var(--shadow-md)"></div>
+          <span>shadow-md</span>
+        </div>
+        <div class="shad-box">
+          <div class="swatch blue" style="box-shadow:var(--shadow-blue)"></div>
+          <span>shadow-blue</span>
+        </div>
+        <div class="shad-box">
+          <div class="swatch lime" style="box-shadow:var(--shadow-lime)"></div>
+          <span>shadow-lime</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score ring / card element -->
+  <div class="divider" style="margin-top:32px"><span>Score ring component (used in landing page)</span></div>
+  <div class="comp-card">
+    <p class="comp-label">Visibility score card — floating UI element</p>
+    <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap">
+      <div style="background:var(--white);border-radius:20px;padding:18px 20px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-md)">
+        <div style="width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--legend-blue) 0 76%, var(--blue-100) 76% 100%);flex-shrink:0">
+          <div style="width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:18px;color:var(--legend-blue)">76</div>
+        </div>
+        <div style="font-family:var(--font-display)">
+          <b style="display:block;font-size:15px;color:var(--ink-navy)">Visibility Score</b>
+          <span style="font-size:12.5px;color:var(--ink-soft)">Your farm area · Vancouver</span>
+        </div>
+      </div>
+      <pre class="code-block" style="flex:1;min-width:280px"><span class="c-com">/* Conic-gradient ring pattern */</span>
+<span class="c-prop">background</span>: <span class="c-val">conic-gradient(
+  var(--legend-blue) 0 76%,
+  var(--blue-100)    76% 100%
+)</span>;
+<span class="c-com">/* Replace 76% with dynamic score value */</span>
+<span class="c-com">/* Inner circle: white bg, Poppins 800 */</span></pre>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     06 · VOICE & COPY
+════════════════════════════════════════ -->
+<section class="section" id="voice">
+  <div class="sec-head">
+    <span class="sec-num on-dark">06</span>
+    <div>
+      <h2 class="sec-title">Voice &amp; Copy Rules</h2>
+      <p class="sec-note">The cool friend who is great at this and makes it look easy. Confident, never corporate. Empowers the client — the hero is always them, not the studio.</p>
+    </div>
+  </div>
+
+  <div class="voice-grid">
+    <div class="voice-card voice-do">
+      <p class="vmark">✓ DO</p>
+      <p><strong>Short, punchy sentences.</strong> Plain English. The message is always "look how easy this is," never "look how clever we are."</p>
+    </div>
+    <div class="voice-card voice-dont">
+      <p class="vmark">✗ DON'T</p>
+      <p><strong>No em dashes.</strong> Use commas, periods, parentheses, or hyphens. Em dashes are a hard block everywhere in the brand.</p>
+    </div>
+    <div class="voice-card voice-do">
+      <p class="vmark">✓ DO</p>
+      <p><strong>Roast the old way, kindly.</strong> Poke fun at shaky selfie clips and posting once a season. Show the better way.</p>
+    </div>
+    <div class="voice-card voice-dont">
+      <p class="vmark">✗ DON'T</p>
+      <p><strong>No jargon, hype, or fake urgency.</strong> No "game-changing," "revolutionary," or countdown timers. Human and honest.</p>
+    </div>
+    <div class="voice-card voice-do">
+      <p class="vmark">✓ DO</p>
+      <p><strong>Demystify AI and video.</strong> Make it feel approachable and exciting. The client films nothing and just posts.</p>
+    </div>
+    <div class="voice-card voice-dont">
+      <p class="vmark">✗ DON'T</p>
+      <p><strong>No talking down.</strong> The audience are smart owner-operators. They decide fast and value credibility. Never condescending.</p>
+    </div>
+  </div>
+
+  <div class="divider" style="margin-top:28px"><span>Sample lines — on-brand copy</span></div>
+  <div class="sample-lines">
+    <div class="sample-line">Your competitor films one shaky video a month. You are about to post thirty.</div>
+    <div class="sample-line">Buyers hire the agent they remember. Be impossible to forget.</div>
+    <div class="sample-line">You do not need to be on camera all day. You need to be everywhere.</div>
+    <div class="sample-line">Big-budget content, minus the big budget, the crew, and the tripod you never use.</div>
+    <div class="sample-line">Two minutes. Instant report. No spam.</div>
+  </div>
+
+  <div class="divider" style="margin-top:28px"><span>Locked taglines</span></div>
+  <div class="two-col">
+    <div class="comp-card">
+      <p class="comp-label">Primary descriptor</p>
+      <p style="font-family:var(--font-display);font-weight:700;font-size:28px;color:var(--cream);margin:0;letter-spacing:-.02em">Storytelling that scales.</p>
+    </div>
+    <div class="comp-card">
+      <p class="comp-label">Emotional hook</p>
+      <p style="font-family:var(--font-display);font-weight:700;font-size:28px;color:var(--cream);margin:0;letter-spacing:-.02em">Become the local legend.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     07 · SCORE APP PAGE SPEC
+════════════════════════════════════════ -->
+<section class="section" id="scoreapp">
+  <div class="sec-head">
+    <span class="sec-num on-dark">07</span>
+    <div>
+      <h2 class="sec-title">Score App Page — Build Spec</h2>
+      <p class="sec-note">The Realtor Visibility Scorecard funnel. A 2-minute quiz that scores an agent's local visibility and delivers a personalized report. Built in Legend Blue dark mode with cream and lime accents.</p>
+    </div>
+  </div>
+
+  <!-- Locked copy -->
+  <div class="divider"><span>Locked copy — do not change</span></div>
+  <div class="comp-card" style="margin-bottom:24px">
+    <p class="comp-label">Landing / entry page copy</p>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="border-left:4px solid var(--legend-blue);padding-left:18px">
+        <p style="font-family:var(--font-display);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--signal-lime);margin:0 0 6px">Headline</p>
+        <p style="font-family:var(--font-display);font-weight:800;font-size:20px;color:var(--cream);margin:0;line-height:1.2">Is your real estate brand actually visible, or are buyers scrolling right past you?</p>
+      </div>
+      <div style="border-left:4px solid var(--ink-600);padding-left:18px">
+        <p style="font-family:var(--font-display);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px">Subhead</p>
+        <p style="font-size:15px;color:rgba(244,239,230,.75);margin:0;line-height:1.6">Take the 2-minute Realtor Visibility Scorecard and get a custom report on exactly what is costing you listings, and how to fix it.</p>
+      </div>
+      <div style="border-left:4px solid var(--ink-600);padding-left:18px">
+        <p style="font-family:var(--font-display);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px">Three bullets</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="display:flex;gap:10px;align-items:center;font-size:14px;color:rgba(244,239,230,.75)"><ll-pin star="ink" style="width:14px;height:17px;flex-shrink:0"></ll-pin> See how your presence stacks up in your farm area</span>
+          <span style="display:flex;gap:10px;align-items:center;font-size:14px;color:rgba(244,239,230,.75)"><ll-pin star="ink" style="width:14px;height:17px;flex-shrink:0"></ll-pin> Get your score and your three biggest gaps</span>
+          <span style="display:flex;gap:10px;align-items:center;font-size:14px;color:rgba(244,239,230,.75)"><ll-pin star="ink" style="width:14px;height:17px;flex-shrink:0"></ll-pin> Built for agents who want to be the name people think of without spending hours on content</span>
+        </div>
+      </div>
+      <div style="border-left:4px solid var(--signal-lime);padding-left:18px">
+        <p style="font-family:var(--font-display);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--signal-lime);margin:0 0 6px">Primary CTA button</p>
+        <button class="btn btn-lime" style="pointer-events:none">Get my free visibility score</button>
+      </div>
+      <div style="border-left:4px solid var(--ink-600);padding-left:18px">
+        <p style="font-family:var(--font-display);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px">Trust line (below button)</p>
+        <p style="font-family:var(--font-display);font-weight:600;font-size:14px;color:var(--ink-soft);margin:0">Two minutes. Instant report. No spam.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page structure spec -->
+  <div class="divider"><span>Page structure</span></div>
+  <div class="spec-grid">
+    <div class="spec-card">
+      <h3>Sections (in order)</h3>
+      <ul>
+        <li><strong>Nav</strong> — sticky, ink/cream bg with blur, horizontal lockup left, lime CTA pill right</li>
+        <li><strong>Hero</strong> — two-column: copy left, visual reel right. Dark ink background.</li>
+        <li><strong>Quiz / Scorecard UI</strong> — the actual interactive questions</li>
+        <li><strong>How it works</strong> — 3-step process on ink background, lime numbered steps</li>
+        <li><strong>Sample video grid</strong> — 3-col, shows style variety, each has video bug</li>
+        <li><strong>Exclusivity banner</strong> — "One agent per area" with kicker treatment</li>
+        <li><strong>CTA / Footer</strong> — repeat the primary CTA, full lockup with URL</li>
+      </ul>
+    </div>
+    <div class="spec-card">
+      <h3>Visual treatment</h3>
+      <ul>
+        <li><strong>Dark-first</strong> — default background is Ink Navy (#0E1016)</li>
+        <li><strong>Alternate bands</strong> — use Ink 700 (#1D212B) for section variety</li>
+        <li><strong>Cream bands</strong> — one or two sections can be full cream bg for contrast</li>
+        <li><strong>Lime only as accent</strong> — never a full background, always a pop detail</li>
+        <li><strong>Border radii</strong> — cards use r-lg (32px), buttons always r-pill (999px)</li>
+        <li><strong>Shadows</strong> — blue buttons get shadow-blue, lime gets shadow-lime</li>
+        <li><strong>Max-width</strong> — 1240px, padding 32px on each side</li>
+        <li><strong>Mobile-first</strong> — hero stacks to single column below 768px</li>
+      </ul>
+    </div>
+    <div class="spec-card">
+      <h3>Score UI components</h3>
+      <ul>
+        <li><strong>Progress bar</strong> — thin, Legend Blue fill on Ink 600 track, pill shape</li>
+        <li><strong>Question cards</strong> — Ink 700 bg, Ink 600 border, r-lg, Poppins 700 question text</li>
+        <li><strong>Answer choices</strong> — Ink 800 bg with Ink 600 border, hover state Legend Blue border + bg tint, selected = blue fill</li>
+        <li><strong>Score ring</strong> — conic-gradient, Legend Blue fill, Blue 100 track, white inner circle, score in Poppins 800</li>
+        <li><strong>Result card</strong> — white bg, r-lg, shadow-md, ink text on cream</li>
+        <li><strong>Gap items</strong> — three "biggest gaps" shown as cards with lime left-border accent</li>
+      </ul>
+    </div>
+    <div class="spec-card">
+      <h3>Nav specification</h3>
+      <ul>
+        <li><strong>Background</strong> — rgba(244,239,230,.86) cream with backdrop-filter: blur(10px)</li>
+        <li><strong>Left</strong> — <code style="font-family:var(--font-mono);font-size:11px;color:var(--signal-lime)">&lt;ll-lockup type="horizontal" theme="light" style="font-size:28px"&gt;</code></li>
+        <li><strong>Right</strong> — "One agent per area" exclusivity pill + lime CTA button</li>
+        <li><strong>Position</strong> — sticky top: 0, z-index: 50</li>
+        <li><strong>Border-bottom</strong> — 1.5px solid var(--cream-200)</li>
+        <li><strong>Padding</strong> — 16px top/bottom on inner wrapper</li>
+      </ul>
+    </div>
+    <div class="spec-card">
+      <h3>Hero section</h3>
+      <ul>
+        <li><strong>Kicker</strong> — "One Agent Per Area" in Signal Lime, tracked caps, Poppins 700</li>
+        <li><strong>Headline</strong> — Poppins 800, -0.035em tracking, clamp(38px, 5.2vw, 70px)</li>
+        <li><strong>Highlight word</strong> — key phrase in Legend Blue color</li>
+        <li><strong>Subhead</strong> — 18-22px, Inter or Poppins 500, #3A3F4C on dark</li>
+        <li><strong>Bullets</strong> — ll-pin as bullet icon, Poppins 500, 18px</li>
+        <li><strong>Hero visual</strong> — 4:5 aspect ratio card, rounded 30px, ink bg, video bug top-left, score card floating bottom-right, lime pin floating top-left</li>
+      </ul>
+    </div>
+    <div class="spec-card">
+      <h3>Typography in the app</h3>
+      <ul>
+        <li><strong>Page H1</strong> — Poppins 800, -0.035em, clamp(38px,5.2vw,70px)</li>
+        <li><strong>Section H2</strong> — Poppins 800, -0.03em, clamp(30px,4vw,48px)</li>
+        <li><strong>Question text</strong> — Poppins 700, 22-26px on desktop</li>
+        <li><strong>Answer labels</strong> — Inter 500 or Poppins 600, 17-18px</li>
+        <li><strong>Body / descriptions</strong> — Inter 400, 18px min, 1.6 line-height</li>
+        <li><strong>Captions / labels</strong> — Poppins 700 tracked caps (kicker style) in lime or ink-soft</li>
+        <li><strong>Trust line</strong> — Poppins 600, 15px, ink-soft color</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     08 · GUARDRAILS
+════════════════════════════════════════ -->
+<section class="section" id="guardrails">
+  <div class="sec-head">
+    <span class="sec-num on-dark">08</span>
+    <div>
+      <h2 class="sec-title">Guardrails</h2>
+      <p class="sec-note">Non-negotiables that apply to every surface, every screen, every line of copy.</p>
+    </div>
+  </div>
+
+  <div class="rail-grid">
+    <div class="rail">
+      <div class="icon" style="color:var(--signal-lime)">✗</div>
+      <h4>No em dashes — ever</h4>
+      <p>Use commas, periods, parentheses, or hyphens. This is a hard rule in copy, UI labels, headlines, everything.</p>
+    </div>
+    <div class="rail">
+      <div class="icon" style="color:var(--signal-lime)">✗</div>
+      <h4>No lime backgrounds</h4>
+      <p>Signal Lime is an accent and pop color. Never use it as a page background, section fill, or card background.</p>
+    </div>
+    <div class="rail">
+      <div class="icon" style="color:var(--signal-lime)">✗</div>
+      <h4>No harsh edges or shadows</h4>
+      <p>Soft and rounded everywhere. No sharp 0px corners on UI elements. No heavy box shadows with dark spread.</p>
+    </div>
+    <div class="rail">
+      <div class="icon" style="color:var(--signal-lime)">✗</div>
+      <h4>No tiny type</h4>
+      <p>18px minimum body. 14px minimum caption/label. Assume low vision throughout. High contrast mandatory.</p>
+    </div>
+    <div class="rail">
+      <div class="icon" style="color:var(--signal-lime)">✗</div>
+      <h4>No all-caps wordmark</h4>
+      <p>Always "Local Legend" in title case. The wordmark font is set at the component level and must not be overridden.</p>
+    </div>
+    <div class="rail">
+      <div class="icon" style="color:var(--signal-lime)">✗</div>
+      <h4>No invented brand colors</h4>
+      <p>Stick to the five core colors and their defined tints. New hues break the system. Tints must be derived, not invented.</p>
+    </div>
+    <div class="rail">
+      <div class="icon" style="color:var(--signal-lime)">→</div>
+      <h4>Domain &amp; handle</h4>
+      <p>Domain: locallegend.studio. Handle: @local_legend_yvr. First market: Vancouver. Never reference other cities unless specified.</p>
+    </div>
+    <div class="rail">
+      <div class="icon" style="color:var(--signal-lime)">→</div>
+      <h4>One agent per area</h4>
+      <p>Exclusivity is a core brand promise. Always include this message somewhere on the score page and landing experiences.</p>
+    </div>
+    <div class="rail">
+      <div class="icon" style="color:var(--signal-lime)">→</div>
+      <h4>Self-contained brand</h4>
+      <p>Do not reference, link to, or borrow visual language from any other brand or service. Local Legend stands entirely alone.</p>
+    </div>
+  </div>
+
+  <!-- Quick reference card -->
+  <div style="background:var(--ink-700);border:1.5px solid var(--signal-lime);border-radius:var(--r-lg);padding:32px 36px;margin-top:32px">
+    <p style="font-family:var(--font-display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--signal-lime);margin:0 0 20px">Quick-reference cheat sheet for AI builder</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+      <div>
+        <p style="font-family:var(--font-display);font-weight:700;font-size:13px;color:var(--cream);margin:0 0 10px">Colors</p>
+        <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:12px;color:rgba(244,239,230,.7)">
+          <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#3B6BFF;vertical-align:middle;margin-right:6px"></span>#3B6BFF — Legend Blue</span>
+          <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#C6F042;vertical-align:middle;margin-right:6px"></span>#C6F042 — Signal Lime</span>
+          <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#0E1016;border:1px solid #333;vertical-align:middle;margin-right:6px"></span>#0E1016 — Ink Navy</span>
+          <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#F4EFE6;vertical-align:middle;margin-right:6px"></span>#F4EFE6 — Cream</span>
+          <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#FFFFFF;border:1px solid #ddd;vertical-align:middle;margin-right:6px"></span>#FFFFFF — White</span>
+        </div>
+      </div>
+      <div>
+        <p style="font-family:var(--font-display);font-weight:700;font-size:13px;color:var(--cream);margin:0 0 10px">Fonts</p>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:rgba(244,239,230,.7)">
+          <span style="font-family:var(--font-display);font-weight:700">Poppins 700/800/900</span>
+          <span style="font-size:12px;color:var(--ink-soft)">Headlines, wordmark, UI, kickers</span>
+          <span style="font-family:var(--font-body);font-weight:400;margin-top:4px">Inter 400/500/600</span>
+          <span style="font-size:12px;color:var(--ink-soft)">Body copy, captions, labels</span>
+        </div>
+      </div>
+      <div>
+        <p style="font-family:var(--font-display);font-weight:700;font-size:13px;color:var(--cream);margin:0 0 10px">Key numbers</p>
+        <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:12px;color:rgba(244,239,230,.7)">
+          <span>Body min: 18px</span>
+          <span>Cards: border-radius 32px</span>
+          <span>Buttons: border-radius 999px</span>
+          <span>Max-width: 1240px</span>
+          <span>CTA: "Get my free visibility score"</span>
+          <span>Trust: "Two minutes. Instant report. No spam."</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-brand">
+    <ll-lockup type="horizontal" theme="dark" style="font-size:22px"></ll-lockup>
+  </div>
+  <span class="footer-date">Visual Identity Handoff · v1 · June 2026 · For Back To Claude Works</span>
+</div>
+
+</div><!-- /doc -->
+
+<script src="brand/logo.js"></script>
+</body>
+</html>

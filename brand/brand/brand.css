@@ -1,0 +1,97 @@
+/* ============================================================
+   LOCAL LEGEND — Brand foundation
+   Tokens, type, and shared primitives. Soft, rounded, bold.
+   ============================================================ */
+
+:root {
+  /* Core palette (locked) */
+  --legend-blue: #3B6BFF;
+  --signal-lime: #C6F042;
+  --ink-navy:    #0E1016;
+  --cream:       #F4EFE6;
+  --white:       #FFFFFF;
+
+  /* Tuned supporting tints (derived, never invented hues) */
+  --blue-700:  #2A52D6;   /* deeper blue for shadows / pressed */
+  --blue-100:  #DCE5FF;   /* faint blue wash on light */
+  --ink-800:   #15181F;   /* raised dark surface */
+  --ink-700:   #1D212B;   /* card on ink */
+  --ink-600:   #2A2F3B;   /* hairline / divider on ink */
+  --cream-200: #E7DFD0;   /* divider on cream */
+  --ink-soft:  #5A6072;   /* muted ink text (still >=4.5 on cream/white) */
+
+  /* Type */
+  --font-display: "Poppins", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Radii — one soft rounded language */
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 32px;
+  --r-xl: 44px;
+  --r-pill: 999px;
+
+  /* Shadows — soft, never harsh */
+  --shadow-sm: 0 4px 14px rgba(14,16,22,.10);
+  --shadow-md: 0 14px 40px rgba(14,16,22,.16);
+  --shadow-blue: 0 18px 48px rgba(59,107,255,.34);
+  --shadow-lime: 0 12px 34px rgba(198,240,66,.40);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink-navy);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display helpers */
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+.kicker {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Buttons */
+.btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--r-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+  text-decoration: none;
+  line-height: 1;
+  transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn-lime {
+  background: var(--signal-lime);
+  color: var(--ink-navy);
+  box-shadow: var(--shadow-lime);
+}
+.btn-lime:hover { box-shadow: 0 16px 42px rgba(198,240,66,.55); transform: translateY(-2px); }
+.btn-blue {
+  background: var(--legend-blue);
+  color: var(--white);
+  box-shadow: var(--shadow-blue);
+}
+.btn-blue:hover { box-shadow: 0 22px 56px rgba(59,107,255,.46); transform: translateY(-2px); }
+
+/* Logo component sizing defaults */
+ll-badge, ll-pin, ll-wordmark, ll-lockup { display: inline-block; }
+ll-badge svg, ll-pin svg, ll-lockup svg { display: block; overflow: visible; }

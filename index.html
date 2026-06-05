@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Legend - Real Estate Agent Visibility Scorecard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand/brand.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--ink-navy); color: var(--cream); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+
+/* ═══ MODAL ═══ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(14,16,22,.88);
+  display: flex; align-items: flex-start; justify-content: center;
+  z-index: 200; padding: 20px; overflow-y: auto;
+  animation: mFadeIn .2s ease both;
+}
+.modal-overlay.hiding { animation: mFadeOut .2s ease both; }
+@keyframes mFadeIn  { from { opacity:0; } to { opacity:1; } }
+@keyframes mFadeOut { from { opacity:1; } to { opacity:0; } }
+.modal-card {
+  position: relative;
+  background: #1D212B; border: 1.5px solid #2A2F3B;
+  border-radius: var(--r-lg);
+  box-shadow: 0 0 64px rgba(59,107,255,.3), 0 32px 80px rgba(0,0,0,.65);
+  max-width: 480px; width: 100%; padding: 38px 36px 32px;
+  animation: mSlideUp .22s ease both;
+  display: flex; flex-direction: column; align-items: stretch;
+  margin: auto;
+}
+@keyframes mSlideUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.modal-badge-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
+.modal-h2 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 22px; letter-spacing: -.025em; line-height: 1.2;
+  color: #fff; text-align: center; margin-bottom: 10px;
+}
+.modal-sub {
+  font-size: 15px; line-height: 1.55; color: rgba(244,239,230,.68);
+  text-align: center; margin-bottom: 28px;
+}
+.modal-field { display: flex; flex-direction: column; margin-bottom: 6px; }
+.modal-label {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(244,239,230,.38); margin-bottom: 6px;
+}
+.modal-input {
+  background: transparent; border: none;
+  border-bottom: 1.5px solid #2A2F3B;
+  padding: 11px 0 12px;
+  font-family: var(--font-body); font-size: 17px; color: var(--cream);
+  outline: none; width: 100%; transition: border-bottom-color .14s;
+}
+.modal-input::placeholder { color: rgba(244,239,230,.22); }
+.modal-input:focus { border-bottom-color: var(--legend-blue); }
+.modal-input.error { border-bottom-color: #f87171; }
+.modal-input:disabled { opacity: .4; }
+.modal-field-err {
+  font-size: 12px; color: #f87171;
+  min-height: 18px; padding: 3px 0 10px;
+}
+.modal-cta-wrap { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.btn-loading { pointer-events: none; opacity: .85; gap: 10px; }
+.btn-loading::before {
+  content: ''; width: 16px; height: 16px;
+  border: 2px solid rgba(14,16,22,.25); border-top-color: var(--ink-navy);
+  border-radius: 50%; animation: spin .65s linear infinite; flex: 0 0 auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══ SCORECARD OVERLAY ═══ */
+.sc-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--ink-navy); overflow-y: auto;
+  display: none; flex-direction: column;
+}
+.sc-overlay.open { display: flex; animation: fadeUp .28s ease both; }
+
+.sc-ov-header {
+  padding: 18px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  border-bottom: 1.5px solid var(--ink-600);
+  background: rgba(14,16,22,.92); backdrop-filter: blur(10px);
+  position: sticky; top: 0; z-index: 20; flex: 0 0 auto;
+}
+.sc-back-btn {
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+  color: rgba(244,239,230,.45); background: transparent; border: none;
+  cursor: pointer; display: flex; align-items: center; gap: 7px;
+  padding: 8px 0; transition: color .15s;
+}
+.sc-back-btn:hover { color: var(--cream); }
+
+.sc-content {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 40px 20px 100px;
+}
+.sc-inner { width: 100%; max-width: 580px; }
+
+.sc-screen { display: none; width: 100%; }
+.sc-screen.active { display: block; animation: fadeUp .24s ease both; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* Progress */
+.prog-wrap {
+  height: 3px; background: var(--ink-600); border-radius: 999px;
+  margin-bottom: 36px; overflow: hidden;
+}
+.prog-fill {
+  height: 100%; background: var(--legend-blue);
+  border-radius: 999px; transition: width .4s ease;
+}
+
+/* Question */
+.q-kicker {
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--signal-lime); margin-bottom: 12px;
+}
+.q-text {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(21px,4vw,27px); letter-spacing: -.02em;
+  line-height: 1.18; color: #fff; margin-bottom: 6px;
+}
+.q-note { font-size: 14px; color: var(--ink-soft); margin: 4px 0 22px; line-height: 1.5; }
+
+.options { display: flex; flex-direction: column; gap: 9px; margin: 22px 0 20px; }
+.option {
+  background: var(--ink-700); border: 1.5px solid var(--ink-600);
+  border-radius: var(--r-md); padding: 16px 18px;
+  cursor: pointer; display: flex; align-items: center; gap: 13px;
+  transition: border-color .14s, background .14s;
+  -webkit-tap-highlight-color: transparent; user-select: none;
+}
+.option:hover { border-color: rgba(59,107,255,.55); background: rgba(59,107,255,.07); }
+.option.selected { border-color: var(--legend-blue); background: rgba(59,107,255,.15); }
+.option-dot {
+  width: 19px; height: 19px; border-radius: 50%;
+  border: 2px solid var(--ink-600); flex: 0 0 auto;
+  transition: border-color .14s, background .14s; display: grid; place-items: center;
+}
+.option.selected .option-dot { border-color: var(--legend-blue); background: var(--legend-blue); }
+.option.selected .option-dot::after {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; background: #fff;
+}
+.option-label {
+  font-family: var(--font-display); font-weight: 600; font-size: 16px;
+  color: rgba(244,239,230,.85); line-height: 1.3;
+}
+.option.selected .option-label { color: #fff; }
+
+.text-input {
+  width: 100%; background: var(--ink-700); border: 1.5px solid var(--ink-600);
+  border-radius: var(--r-md); padding: 16px 18px;
+  font-family: var(--font-body); font-size: 17px; color: var(--cream);
+  outline: none; margin-bottom: 20px; transition: border-color .14s; resize: none;
+}
+.text-input::placeholder { color: var(--ink-soft); }
+.text-input:focus { border-color: var(--legend-blue); }
+.text-input.error { border-color: #f87171; }
+
+.q-nav { display: flex; flex-direction: column; gap: 9px; margin-top: 6px; }
+.btn {
+  font-family: var(--font-display); font-weight: 700; border: none;
+  cursor: pointer; border-radius: var(--r-pill);
+  display: inline-flex; align-items: center; gap: .5em;
+  line-height: 1; text-decoration: none;
+  transition: transform .14s, opacity .14s;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn-lime {
+  background: var(--signal-lime); color: var(--ink-navy);
+  box-shadow: var(--shadow-lime); padding: 19px 34px; font-size: 17px;
+  width: 100%; justify-content: center;
+}
+.btn-blue {
+  background: var(--legend-blue); color: #fff;
+  box-shadow: var(--shadow-blue); padding: 16px 28px; font-size: 16px;
+  width: 100%; justify-content: center;
+}
+.btn-ghost {
+  background: transparent; color: rgba(244,239,230,.38);
+  padding: 13px 0; font-size: 14px;
+  width: 100%; justify-content: center; border: none;
+}
+.btn-ghost:hover { color: var(--cream); transform: none; }
+
+/* Result */
+.result-ring-wrap { display: flex; justify-content: center; margin-bottom: 22px; }
+.result-ring {
+  width: 116px; height: 116px; border-radius: 50%;
+  display: grid; place-items: center;
+}
+.result-ring-inner {
+  width: 84px; height: 84px; border-radius: 50%;
+  background: var(--ink-navy);
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 13px; line-height: 1.2; text-align: center;
+}
+.result-ring-score { font-size: 26px; font-weight: 800; display: block; }
+.result-ring-of { font-size: 11px; color: var(--ink-soft); font-weight: 600; }
+.result-tier-kicker {
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--signal-lime); text-align: center; margin-bottom: 10px;
+}
+.result-h2 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(24px,5vw,36px); letter-spacing: -.03em;
+  line-height: 1.08; color: #fff; text-align: center;
+  margin-bottom: 26px; text-wrap: balance;
+}
+.result-gaps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.gap-item {
+  background: var(--ink-700); border: 1.5px solid var(--ink-600);
+  border-left: 4px solid var(--signal-lime);
+  border-radius: var(--r-md); padding: 14px 18px;
+  display: flex; align-items: center; gap: 13px;
+}
+.gap-num {
+  font-family: var(--font-display); font-weight: 800; font-size: 13px;
+  color: var(--signal-lime); flex: 0 0 auto;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(198,240,66,.12); display: grid; place-items: center;
+}
+.gap-text { font-family: var(--font-display); font-weight: 600; font-size: 14.5px; color: var(--cream); }
+.result-card {
+  background: var(--ink-700); border: 1.5px solid var(--ink-600);
+  border-radius: var(--r-lg); padding: 26px 24px; margin-bottom: 22px;
+}
+.result-copy { font-size: 15.5px; line-height: 1.72; color: rgba(244,239,230,.8); }
+.result-copy p { margin-bottom: 13px; }
+.result-copy p:last-child { margin-bottom: 0; }
+.result-cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.result-email-note {
+  font-size: 13.5px; line-height: 1.55; color: rgba(244,239,230,.45);
+  text-align: center; padding: 0 8px; margin-top: 4px;
+}
+.result-email-note strong { color: rgba(244,239,230,.72); }
+.result-restart {
+  margin-top: 10px; font-size: 14px; color: rgba(244,239,230,.35);
+  background: transparent; border: none; cursor: pointer;
+  font-family: var(--font-display); font-weight: 600;
+  transition: color .15s;
+}
+.result-restart:hover { color: rgba(244,239,230,.7); }
+
+.trust-line {
+  font-family: var(--font-display); font-weight: 600; font-size: 13.5px;
+  color: var(--ink-soft); display: flex; align-items: center; gap: 7px;
+  justify-content: center; text-align: center;
+}
+.trust-dot { color: var(--legend-blue); font-size: 7px; flex: 0 0 auto; }
+
+/* ═══ LANDING PAGE ═══ */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(14,16,22,.88); backdrop-filter: blur(12px);
+  border-bottom: 1.5px solid var(--ink-600);
+}
+.nav-in {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; gap: 16px;
+}
+.nav-r { display: flex; align-items: center; gap: 14px; }
+.excl-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(244,239,230,.07); border: 1.5px solid var(--ink-600);
+  padding: 9px 16px; border-radius: var(--r-pill);
+  font-family: var(--font-display); font-weight: 700; font-size: 13px;
+  color: rgba(244,239,230,.6);
+}
+.btn-lp {
+  font-family: var(--font-display); font-weight: 700; border: none;
+  cursor: pointer; border-radius: var(--r-pill);
+  display: inline-flex; align-items: center; gap: .5em;
+  line-height: 1; transition: transform .14s, opacity .14s;
+}
+.btn-lp:hover { transform: translateY(-1px); }
+.btn-lp-lime {
+  background: var(--signal-lime); color: var(--ink-navy);
+  box-shadow: var(--shadow-lime);
+}
+.btn-lp-sm  { padding: 13px 22px; font-size: 15px; }
+.btn-lp-lg  { padding: 22px 34px; font-size: 19px; }
+
+.hero-section {
+  background: var(--ink-navy);
+  border-bottom: 1.5px solid var(--ink-600);
+  padding: 72px 0 88px;
+}
+.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+
+.hero-copy .kicker {
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--signal-lime);
+  display: flex; align-items: center; gap: 9px; margin-bottom: 20px;
+}
+.hero-copy h1 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(36px,4.8vw,66px); letter-spacing: -.035em; line-height: .97;
+  color: #fff; text-wrap: balance; margin-bottom: 22px;
+}
+.hero-copy h1 .hi { color: var(--legend-blue); }
+.hero-copy .sub {
+  font-size: clamp(17px,1.8vw,21px); line-height: 1.55;
+  color: rgba(244,239,230,.72); max-width: 40ch; margin-bottom: 28px;
+}
+.bullets { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 34px; }
+.bullets li {
+  display: flex; gap: 13px; align-items: flex-start;
+  font-size: 17px; line-height: 1.45; font-weight: 500;
+  color: rgba(244,239,230,.85);
+}
+.bullets li b { font-family: var(--font-display); font-weight: 700; color: #fff; }
+.bullets ll-pin { width: 24px; height: 29px; flex: 0 0 auto; margin-top: 1px; }
+.cta-row { display: flex; flex-direction: column; gap: 14px; }
+.trust {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-display); font-weight: 600; font-size: 14px;
+  color: var(--ink-soft);
+}
+.trust .d { color: var(--legend-blue); font-size: 7px; }
+
+/* Video showcase */
+.vid-showcase { display: flex; flex-direction: column; gap: 18px; position: relative; }
+.vid-frame-wrap { position: relative; border-radius: 28px; overflow: visible; }
+.vid-frame {
+  position: relative; border-radius: 28px; overflow: hidden;
+  aspect-ratio: 9/16; max-height: 540px; background: #12151E;
+  box-shadow: 0 32px 80px rgba(0,0,0,.6), 0 0 0 1.5px var(--ink-600);
+  transition: background .35s ease, opacity .18s ease;
+}
+.vid-frame[data-style="ugc"]        { background: #0E1420; }
+.vid-frame[data-style="faceless"]   { background: #0A0E18; }
+.vid-frame[data-style="editorial"]  { background: #0E1625; }
+.vid-frame[data-style="avatar"]     { background: #130E1E; }
+.vid-frame[data-style="animation"]  { background: #0E1814; }
+.vid-frame[data-style="claymation"] { background: #1A1008; }
+.vid-frame image-slot { position: absolute; inset: 0; width: 100%; height: 100%; }
+.vid-grad {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg,rgba(14,16,22,.35) 0%,rgba(14,16,22,0) 40%,rgba(14,16,22,.72) 100%);
+}
+.vid-bug {
+  position: absolute; top: 16px; left: 16px; z-index: 3;
+  width: 44px; height: 44px; border-radius: 13px;
+  background: var(--legend-blue); display: grid; place-items: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,.4);
+}
+.vid-bug ll-badge { width: 24px; height: 31px; }
+.vid-play-btn {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 68px; height: 68px; border-radius: 50%;
+  background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.28);
+  display: grid; place-items: center; z-index: 3; pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+.vid-play-btn::after {
+  content: ''; width: 0; height: 0; border-style: solid;
+  border-width: 11px 0 11px 20px;
+  border-color: transparent transparent transparent rgba(255,255,255,.88);
+  margin-left: 5px;
+}
+.vid-style-pill {
+  position: absolute; bottom: 18px; left: 18px; z-index: 4;
+  background: rgba(244,239,230,.9); color: var(--ink-navy);
+  font-family: var(--font-display); font-weight: 700; font-size: 13.5px;
+  padding: 7px 16px; border-radius: 999px;
+}
+.score-float {
+  position: absolute; right: -22px; bottom: 52px;
+  background: rgba(14,16,22,.92); border: 1.5px solid var(--ink-600);
+  border-radius: 18px; padding: 16px 18px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.55);
+  display: flex; align-items: center; gap: 13px;
+  z-index: 5; backdrop-filter: blur(10px); min-width: 196px;
+}
+.score-ring {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: conic-gradient(var(--legend-blue) 0 76%, var(--ink-600) 76% 100%);
+  display: grid; place-items: center; flex: 0 0 auto;
+}
+.score-ring-inner {
+  width: 38px; height: 38px; border-radius: 50%; background: #0E1016;
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 16px;
+  color: var(--legend-blue);
+}
+.score-meta b {
+  display: block; font-family: var(--font-display); font-weight: 700;
+  font-size: 13.5px; color: var(--cream); line-height: 1.2;
+}
+.score-meta span { font-size: 11.5px; color: var(--ink-soft); line-height: 1.3; }
+.float-pin {
+  position: absolute; top: -16px; left: -18px; z-index: 6;
+  filter: drop-shadow(0 10px 20px rgba(198,240,66,.35));
+}
+.float-pin ll-pin { width: 50px; height: 61px; }
+.vid-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.vid-tab {
+  padding: 9px 17px; border-radius: var(--r-pill);
+  border: 1.5px solid var(--ink-600);
+  background: transparent; color: rgba(244,239,230,.55);
+  font-family: var(--font-display); font-weight: 700; font-size: 13px;
+  cursor: pointer; transition: background .15s, border-color .15s, color .15s;
+  white-space: nowrap;
+}
+.vid-tab:hover { border-color: rgba(59,107,255,.5); color: var(--cream); }
+.vid-tab.active { background: var(--legend-blue); border-color: var(--legend-blue); color: #fff; }
+
+/* Video grid */
+.band { padding: 88px 0; }
+.band-cream { background: var(--cream); color: var(--ink-navy); }
+.sec-top { text-align: center; max-width: 760px; margin: 0 auto 52px; }
+.sec-top .skicker {
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--signal-lime);
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  margin-bottom: 14px;
+}
+.band-cream .sec-top .skicker { color: var(--legend-blue); }
+.sec-top h2 {
+  font-family: var(--font-display); font-weight: 800;
+  letter-spacing: -.03em; font-size: clamp(28px,3.8vw,46px);
+  line-height: 1.04; margin-bottom: 16px;
+}
+.sec-top p { font-size: 17px; line-height: 1.55; opacity: .78; }
+.vgrid { display: grid; grid-template-columns: repeat(6,1fr); gap: 14px; }
+.vcard {
+  position: relative; border-radius: 20px; overflow: hidden;
+  aspect-ratio: 9/14; background: #1B1E27;
+  box-shadow: 0 8px 28px rgba(0,0,0,.4);
+  cursor: pointer; transition: transform .2s, box-shadow .2s;
+}
+.vcard:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.55); }
+.vcard image-slot { position: absolute; inset: 0; width: 100%; height: 100%; }
+.vcard .vb {
+  position: absolute; top: 12px; left: 12px; width: 38px; height: 38px;
+  border-radius: 11px; background: var(--legend-blue);
+  display: grid; place-items: center; z-index: 2;
+  box-shadow: 0 4px 12px rgba(0,0,0,.4);
+}
+.vcard .vb ll-badge { width: 20px; height: 26px; }
+.vcard .vstyle {
+  position: absolute; bottom: 12px; left: 12px; z-index: 2;
+  background: rgba(244,239,230,.92); color: var(--ink-navy);
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+}
+.vcard .vg {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg,transparent 50%,rgba(14,16,22,.55));
+  z-index: 1;
+}
+
+/* How it works */
+.steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+.step {
+  background: #fff; border: 1.5px solid rgba(14,16,22,.1);
+  border-radius: var(--r-lg); padding: 36px 30px;
+}
+.step .n {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--legend-blue); color: #fff;
+  font-family: var(--font-display); font-weight: 800; font-size: 22px;
+  display: grid; place-items: center; margin-bottom: 20px;
+}
+.step h3 { font-family: var(--font-display); font-weight: 700; font-size: 22px; letter-spacing: -.02em; margin-bottom: 10px; color: var(--ink-navy); }
+.step p { font-size: 16px; line-height: 1.55; color: #3A3F4C; }
+
+/* Exclusivity */
+.excl-wrap { padding-bottom: 88px; }
+.excl {
+  background: var(--signal-lime); color: var(--ink-navy);
+  border-radius: var(--r-xl); padding: 56px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+}
+.excl ll-pin { width: 54px; height: 65px; }
+.excl h2 { font-family: var(--font-display); font-weight: 800; letter-spacing: -.03em; font-size: clamp(26px,3.5vw,44px); line-height: 1.04; }
+.excl p { font-size: 18px; max-width: 54ch; line-height: 1.5; font-weight: 500; }
+
+/* Bottom CTA */
+.cta-section { background: var(--legend-blue); }
+.cta-block {
+  padding: 88px 0 96px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+.cta-block .kicker2 {
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--signal-lime); margin-bottom: 18px;
+}
+.cta-block h2 {
+  font-family: var(--font-display); font-weight: 800;
+  letter-spacing: -.03em; font-size: clamp(28px,4vw,52px);
+  line-height: 1.0; color: #fff; max-width: 16ch;
+  text-wrap: balance; margin-bottom: 18px;
+}
+.cta-block p { font-size: 18px; max-width: 50ch; line-height: 1.55; color: rgba(255,255,255,.85); margin-bottom: 36px; }
+.trust-cta {
+  margin-top: 16px; font-family: var(--font-display); font-weight: 600; font-size: 14px;
+  color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 8px;
+}
+.trust-cta .d { color: var(--signal-lime); font-size: 7px; }
+
+footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); padding: 48px 0 64px; }
+.foot-in { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.foot-in .fl { font-family: var(--font-body); font-size: 14px; color: var(--ink-soft); }
+
+/* Responsive */
+@media (max-width: 1024px) { .vgrid { grid-template-columns: repeat(3,1fr); } }
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; gap: 52px; }
+  .vid-showcase { max-width: 400px; margin: 0 auto; }
+  .score-float { right: -10px; }
+  .steps { grid-template-columns: 1fr; }
+  .excl-pill { display: none; }
+}
+@media (max-width: 600px) {
+  .wrap { padding: 0 22px; }
+  .vgrid { grid-template-columns: repeat(2,1fr); }
+  .vid-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+  .vid-tabs::-webkit-scrollbar { display: none; }
+  .band { padding: 64px 0; }
+  .excl { padding: 40px 26px; }
+  .cta-block { padding: 64px 0 72px; }
+  .modal-card { padding: 30px 24px 26px; }
+}
+</style>
+<!-- Supabase JS client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+<!-- ═══ LEAD CAPTURE MODAL ═══ -->
+<div id="modal-lead" class="modal-overlay" style="display:none">
+  <div class="modal-card">
+    <div class="modal-badge-wrap">
+      <ll-badge variant="blue" style="width:38px;height:49px"></ll-badge>
+    </div>
+    <button id="modalCloseBtn" aria-label="Close" style="position:absolute;top:14px;right:16px;background:transparent;border:none;cursor:pointer;color:rgba(244,239,230,.3);font-size:24px;line-height:1;padding:6px;transition:color .15s">&times;</button>
+    <h2 class="modal-h2">First, let us know who you are.</h2>
+    <p class="modal-sub">Your personalised report goes to your inbox.<br>We will never spam you.</p>
+    <div class="modal-field">
+      <label class="modal-label" for="m-fname">First name</label>
+      <input class="modal-input" id="m-fname" type="text" placeholder="First name" autocomplete="given-name">
+      <span class="modal-field-err" id="e-fname"></span>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label" for="m-lname">Last name</label>
+      <input class="modal-input" id="m-lname" type="text" placeholder="Last name" autocomplete="family-name">
+      <span class="modal-field-err" id="e-lname"></span>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label" for="m-email">Email address</label>
+      <input class="modal-input" id="m-email" type="email" placeholder="you@yourdomain.com" autocomplete="email">
+      <span class="modal-field-err" id="e-email"></span>
+    </div>
+    <div class="modal-cta-wrap">
+      <button class="btn btn-lime" id="modalSubmitBtn">Start the Scorecard</button>
+      <div class="trust-line"><span class="trust-dot">&#9679;</span> Takes 2 minutes. Your farm area spot is still open.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCORECARD OVERLAY ═══ -->
+<div id="sc-overlay" class="sc-overlay">
+  <div class="sc-ov-header">
+    <ll-lockup type="horizontal" theme="dark" style="font-size:19px"></ll-lockup>
+    <button class="sc-back-btn" id="scBackBtn">&#8592; Back to homepage</button>
+  </div>
+  <div class="sc-content">
+    <div class="sc-inner">
+
+      <!-- Questions -->
+      <div id="sc-screen-question" class="sc-screen active">
+        <div class="prog-wrap"><div class="prog-fill" id="progFill"></div></div>
+        <div class="q-kicker" id="qKicker"></div>
+        <div class="q-text" id="qText"></div>
+        <div class="q-note" id="qNote"></div>
+        <div id="qBody"></div>
+        <div class="q-nav" id="qNav"></div>
+      </div>
+
+      <!-- Result -->
+      <div id="sc-screen-result" class="sc-screen">
+        <div class="result-ring-wrap">
+          <div class="result-ring" id="resultRing">
+            <div class="result-ring-inner">
+              <span class="result-ring-score" id="resultScoreNum"></span>
+              <span class="result-ring-of">out of 16</span>
+            </div>
+          </div>
+        </div>
+        <div class="result-tier-kicker" id="resultTierKicker"></div>
+        <h2 class="result-h2" id="resultH2"></h2>
+        <div class="result-gaps" id="resultGaps"></div>
+        <div class="result-card">
+          <div class="result-copy" id="resultCopy"></div>
+        </div>
+        <div class="result-cta-wrap">
+          <a id="resultCTA" href="https://cal.com/local-legend/15-min-video-consult" target="_blank" rel="noopener" class="btn btn-lime">
+            Claim my area, book my free 15-min call &#8594;
+          </a>
+          <div class="trust-line"><span class="trust-dot">&#9679;</span> One agent per area. Yours is still open.</div>
+          <div class="result-email-note" id="resultEmailNote" style="display:none">
+            Your full report is on its way to <strong id="resultEmailDisplay"></strong>. It should be in your inbox within a few minutes.
+          </div>
+          <button class="result-restart" id="resultRestartBtn">&#8592; Back to homepage</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LANDING PAGE ═══ -->
+<nav>
+  <div class="wrap nav-in">
+    <ll-lockup type="horizontal" theme="dark" style="font-size:28px"></ll-lockup>
+    <div class="nav-r">
+      <span class="excl-pill"><ll-pin star="cream" style="width:14px;height:17px"></ll-pin> One agent per area</span>
+      <button class="btn-lp btn-lp-lime btn-lp-sm" onclick="openScorecardModal()">Get my score</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero-section">
+  <div class="wrap hero">
+    <div class="hero-copy">
+      <div class="kicker">
+        <ll-pin star="cream" style="width:14px;height:17px"></ll-pin>
+        Real Estate Agent Visibility Scorecard
+      </div>
+      <h1>Is your brand actually <span class="hi">visible,</span> or are buyers scrolling right past you?</h1>
+      <p class="sub">Take the 2-minute Visibility Scorecard and get a custom report on exactly what is costing you listings, and how to fix it.</p>
+      <ul class="bullets">
+        <li><ll-pin star="ink"></ll-pin><span>See how your presence <b>stacks up in your farm area.</b></span></li>
+        <li><ll-pin star="ink"></ll-pin><span>Get your score and your <b>three biggest gaps.</b></span></li>
+        <li><ll-pin star="ink"></ll-pin><span>Built for agents who want to be the name people think of, <b>without spending hours on content.</b></span></li>
+      </ul>
+      <div class="cta-row">
+        <button class="btn-lp btn-lp-lime btn-lp-lg" onclick="openScorecardModal()">Get my free visibility score &#8594;</button>
+        <div class="trust"><span class="d">&#9679;</span> Two minutes. Instant report. No spam.</div>
+      </div>
+    </div>
+
+    <div class="vid-showcase" id="vidShowcase">
+      <div class="vid-frame-wrap">
+        <span class="float-pin"><ll-pin star="ink"></ll-pin></span>
+        <div class="vid-frame" id="vidFrame" data-style="ugc">
+          <image-slot id="vs-ugc" shape="rect" fit="cover" placeholder="Drop a UGC &amp; selfie still here"></image-slot>
+          <div class="vid-grad"></div>
+          <div class="vid-bug"><ll-badge variant="blue-white"></ll-badge></div>
+          <div class="vid-play-btn"></div>
+          <div class="vid-style-pill" id="vidStylePill">UGC &amp; selfie</div>
+        </div>
+        <div class="score-float">
+          <div class="score-ring"><div class="score-ring-inner">76</div></div>
+          <div class="score-meta">
+            <b>Your visibility score</b>
+            <span>3 gaps found in Kitsilano</span>
+          </div>
+        </div>
+      </div>
+      <div class="vid-tabs" id="vidTabs">
+        <button class="vid-tab active" data-style="ugc">UGC &amp; selfie</button>
+        <button class="vid-tab" data-style="faceless">Faceless</button>
+        <button class="vid-tab" data-style="editorial">Editorial</button>
+        <button class="vid-tab" data-style="avatar">Avatar-led</button>
+        <button class="vid-tab" data-style="animation">Animation</button>
+        <button class="vid-tab" data-style="claymation">Claymation</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="sec-top">
+      <div class="skicker"><ll-pin star="cream" style="width:16px;height:19px"></ll-pin> Range is the flex</div>
+      <h2>One studio. Every style your feed could ask for.</h2>
+      <p>The brand frame stays the same. The content style changes shot to shot, so you never look like everyone else.</p>
+    </div>
+    <div class="vgrid">
+      <div class="vcard" data-gridstyle="ugc">
+        <image-slot id="g1" shape="rect" fit="cover" placeholder="UGC"></image-slot>
+        <div class="vg"></div><span class="vb"><ll-badge variant="blue-white"></ll-badge></span>
+        <span class="vstyle">UGC &amp; selfie</span>
+      </div>
+      <div class="vcard" data-gridstyle="faceless">
+        <image-slot id="g2" shape="rect" fit="cover" placeholder="Faceless"></image-slot>
+        <div class="vg"></div><span class="vb"><ll-badge variant="blue-white"></ll-badge></span>
+        <span class="vstyle">Faceless</span>
+      </div>
+      <div class="vcard" data-gridstyle="editorial">
+        <image-slot id="g3" shape="rect" fit="cover" placeholder="Editorial"></image-slot>
+        <div class="vg"></div><span class="vb"><ll-badge variant="blue-white"></ll-badge></span>
+        <span class="vstyle">Editorial</span>
+      </div>
+      <div class="vcard" data-gridstyle="avatar">
+        <image-slot id="g4" shape="rect" fit="cover" placeholder="Avatar-led"></image-slot>
+        <div class="vg"></div><span class="vb"><ll-badge variant="blue-white"></ll-badge></span>
+        <span class="vstyle">Avatar-led</span>
+      </div>
+      <div class="vcard" data-gridstyle="animation">
+        <image-slot id="g5" shape="rect" fit="cover" placeholder="Animation"></image-slot>
+        <div class="vg"></div><span class="vb"><ll-badge variant="blue-white"></ll-badge></span>
+        <span class="vstyle">Animation</span>
+      </div>
+      <div class="vcard" data-gridstyle="claymation">
+        <image-slot id="g6" shape="rect" fit="cover" placeholder="Claymation"></image-slot>
+        <div class="vg"></div><span class="vb"><ll-badge variant="blue-white"></ll-badge></span>
+        <span class="vstyle">Claymation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band band-cream">
+  <div class="wrap">
+    <div class="sec-top">
+      <div class="skicker">How it works</div>
+      <h2>Three steps to becoming the name people know.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <h3>Take the scorecard</h3>
+        <p>Two minutes, a few questions about your area. You get your visibility score and your three biggest gaps, instantly.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h3>We build your studio</h3>
+        <p>We write and produce a steady stream of branded short videos in a range of styles. You film nothing.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h3>You post. You become the legend.</h3>
+        <p>You just post. Show up everywhere, every day, and turn into the agent your neighbourhood remembers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band band-cream excl-wrap" style="padding-top:0">
+  <div class="wrap">
+    <div class="excl">
+      <ll-pin star="ink"></ll-pin>
+      <h2>One agent per area. When yours is taken, it is taken.</h2>
+      <p>We work with a single operator in each neighbourhood. No training your competition. The legend of your local is a job for one.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="wrap cta-block">
+    <div class="kicker2">Get your report</div>
+    <h2>Find out what is costing you listings.</h2>
+    <p>Take the 2-minute Real Estate Agent Visibility Scorecard and get your custom report on exactly what to fix, and in what order.</p>
+    <button class="btn-lp btn-lp-lime btn-lp-lg" onclick="openScorecardModal()">Get my free visibility score &#8594;</button>
+    <div class="trust-cta"><span class="d">&#9679;</span> Two minutes. Instant report. No spam.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <ll-lockup type="horizontal" theme="dark" style="font-size:24px"></ll-lockup>
+    <span class="fl">&copy; Local Legend &middot; Vancouver &middot; @local_legend_yvr</span>
+  </div>
+</footer>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script src="brand/logo.js"></script>
+<script src="brand/image-slot.js"></script>
+<script>
+'use strict';
+
+/* ── Video style switcher ── */
+var STYLES = {
+  ugc:        'UGC \u0026 selfie',
+  faceless:   'Faceless',
+  editorial:  'Editorial',
+  avatar:     'Avatar-led',
+  animation:  'Animation',
+  claymation: 'Claymation'
+};
+var vidFrame = document.getElementById('vidFrame');
+var vidPill  = document.getElementById('vidStylePill');
+var vidSlot  = document.getElementById('vs-ugc');
+var currentVidStyle = 'ugc';
+
+function switchVidStyle(key) {
+  if (key === currentVidStyle) return;
+  currentVidStyle = key;
+  vidFrame.style.opacity = '0';
+  setTimeout(function() {
+    vidFrame.dataset.style = key;
+    vidPill.textContent = STYLES[key] || key;
+    vidSlot.setAttribute('placeholder', 'Drop a ' + (STYLES[key] || key) + ' still here');
+    vidFrame.style.opacity = '1';
+  }, 160);
+}
+
+document.getElementById('vidTabs').addEventListener('click', function(e) {
+  var btn = e.target.closest('.vid-tab');
+  if (!btn) return;
+  document.querySelectorAll('.vid-tab').forEach(function(t){ t.classList.remove('active'); });
+  btn.classList.add('active');
+  switchVidStyle(btn.dataset.style);
+});
+
+document.querySelectorAll('.vcard').forEach(function(card) {
+  card.addEventListener('click', function() {
+    var key = card.dataset.gridstyle;
+    document.querySelectorAll('.vid-tab').forEach(function(t){
+      t.classList.toggle('active', t.dataset.style === key);
+    });
+    switchVidStyle(key);
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+/* ── Supabase config ── */
+var SUPABASE_URL      = 'https://gcbvvausrmbbkfazojpl.supabase.co';
+var SUPABASE_ANON_KEY = 'sb_publishable_dx9sYWtLtpXacM9ZIXoYRg_VPiKG69P';
+var db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* Escape user-supplied strings before insertion into innerHTML */
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Scorecard state ── */
+var leadId        = null;
+var leadFirstName = '';
+var leadLastName  = '';
+var leadEmail     = '';
+var scCurrentIdx  = 0;
+var scAnswers     = {};
+var scFarmArea    = 'your area';
+
+var QS = [
+  { id:'q1',  num:1,  type:'text',   text:'Which area or neighbourhood do you primarily farm?', placeholder:'e.g. Kitsilano, East Van, Mount Pleasant...', scored:false, optional:false },
+  { id:'q2',  num:2,  type:'choice', text:'How often do you post video content right now?', scored:true,
+    opts:[{label:'Never',val:0},{label:'Once in a while',val:1},{label:'A few times a month',val:2},{label:'Weekly or more',val:3}] },
+  { id:'q3',  num:3,  type:'choice', text:'What does your content usually look like?', scored:true,
+    opts:[{label:'Mostly just listings',val:0},{label:'Listings with the occasional personal post',val:1},{label:'A mix of listings, tips, and personality',val:2},{label:'A real content strategy with a consistent theme',val:3}] },
+  { id:'q4',  num:4,  type:'choice', text:'How do you make your videos today?', scored:true,
+    opts:[{label:'I do not make videos',val:0},{label:'I film on my phone when I get a chance',val:1},{label:'I hire someone occasionally',val:2},{label:'I have a system that runs',val:3}] },
+  { id:'q5',  num:5,  type:'choice', text:'In your farm area, how recognisable is your name?', scored:true,
+    opts:[{label:'People do not know me yet',val:0},{label:'Some recognition',val:1},{label:'Fairly well known',val:2},{label:'I am the name people think of',val:3}] },
+  { id:'q6',  num:6,  type:'choice', text:'What is your single biggest content challenge?', note:'Pick whichever fits best.', scored:true,
+    opts:[{label:'No time',val:1},{label:'I never know what to say',val:1},{label:'I hate being on camera',val:1},{label:'I cannot stay consistent',val:1},{label:'I post but get no engagement',val:1}] },
+  { id:'q7',  num:7,  type:'choice', text:'Who are you mainly trying to reach?', scored:false,
+    opts:[{label:'First-time buyers',val:0},{label:'Luxury buyers and sellers',val:0},{label:'Sellers and listings',val:0},{label:'Investors',val:0},{label:'A specific community or culture',val:0}] },
+  { id:'q8',  num:8,  type:'text',   text:'In one line, what makes you different from other agents in your area?', placeholder:'e.g. I specialise in helping families find their first home...', scored:false, optional:true },
+  { id:'q9',  num:9,  type:'choice', text:'What is your monthly marketing budget?', scored:true,
+    opts:[{label:'Under $250',val:0},{label:'$250 to $750',val:1},{label:'$750 to $2,000',val:2},{label:'$2,000+',val:3}] },
+  { id:'q10', num:10, type:'choice', text:'Which platforms do you currently use?', scored:false,
+    opts:[{label:'Instagram only',val:0},{label:'Instagram and Facebook',val:0},{label:'Instagram, Facebook, and YouTube',val:0},{label:'All platforms including TikTok',val:0}] },
+  { id:'q11', num:11, type:'text',   text:'Your Instagram handle',             placeholder:'@yourusername',              scored:false, optional:true },
+  { id:'q12', num:12, type:'text',   text:'Your website or Facebook page',     placeholder:'yourwebsite.com',            scored:false, optional:true },
+  { id:'q13', num:13, type:'text',   text:'Your YouTube channel',              placeholder:'youtube.com/@yourchannel',   scored:false, optional:true },
+  { id:'q14', num:14, type:'text',   text:'Your TikTok handle',                placeholder:'@yourtiktok',                scored:false, optional:true },
+  { id:'q15', num:15, type:'text',   text:'Any other links or platforms?',     placeholder:'LinkedIn, blog, etc.', note:'Optional.', scored:false, optional:true }
+];
+
+var RESULTS = {
+  hidden: {
+    tier:'The Hidden Agent', ringColor:'#E5484D',
+    h2:'You are close to invisible in [area].',
+    gaps:['Posting frequency is your biggest gap','Buyers in [area] are not seeing your name','You have no consistent content system'],
+    copy:'<p>Right now, online, you are close to invisible in [area]. That is not a talent problem. It is a visibility problem, and it is the single biggest reason listings go to other agents.</p><p>Buyers and sellers hire the agent they see and remember. If they are not seeing you, you are not in the running, no matter how good you are.</p><p>The fast fix is not more effort. It is showing up consistently with content that actually sounds like you. That is exactly what we build.</p><p>Your area is currently open. I only take one agent per area. Book a free 15-minute call and I will show you what your first video looks like, before you decide anything.</p>'
+  },
+  inconsistent: {
+    tier:'The Inconsistent Brand', ringColor:'#f59e0b',
+    h2:'You are showing up. The gaps are costing you listings.',
+    gaps:['Consistency is the gap, not effort','Quiet stretches are handing recognition to competitors','You need a system, not more time'],
+    copy:'<p>The good news: you are already showing up, which puts you ahead of most agents in [area]. The problem is the gaps.</p><p>The agent who posts every week with a clear brand becomes the name people think of. You are leaving recognition, and listings, on the table in the quiet stretches.</p><p>You do not need to work harder. You need a system that keeps the content flowing even in your busiest weeks. That is what we do.</p><p>Your area is currently open. Book a free 15-minute call and I will show you a video made for your brand, then you decide.</p>'
+  },
+  visible: {
+    tier:'The Visible Pro', ringColor:'#22c55e',
+    h2:"You are already ahead. Let's make it untouchable.",
+    gaps:['Volume is the last gap between you and total dominance','Time spent producing is time away from clients','No one can match your volume alone'],
+    copy:"<p>You are already doing what most agents will not, and it shows. So let me be straight with you.</p><p>At your level, there are only two things costing you. Either you are spending hours every week making this content yourself, or you are leaving reach on the table because no one can produce at the volume that actually dominates a market.</p><p>We solve both. Same brand, same voice you have built, just produced for you at a volume you cannot hit alone, so you stay the most visible name in [area] without the time cost.</p><p>Your area is open. Book a free 15-minute call and I will show you what we would make for your brand.</p>"
+  }
+};
+
+/* ── Modal open/close ── */
+function openScorecardModal() {
+  var m = document.getElementById('modal-lead');
+  m.classList.remove('hiding');
+  m.style.display = 'flex';
+  setTimeout(function(){ document.getElementById('m-fname').focus(); }, 80);
+}
+
+function closeModal(cb) {
+  var m = document.getElementById('modal-lead');
+  m.classList.add('hiding');
+  setTimeout(function(){
+    m.style.display = 'none';
+    m.classList.remove('hiding');
+    if (cb) cb();
+  }, 200);
+}
+
+/* ── Scorecard overlay open/close ── */
+function openScorecard() {
+  var ov = document.getElementById('sc-overlay');
+  ov.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  ov.scrollTop = 0;
+}
+
+function closeScorecard() {
+  var ov = document.getElementById('sc-overlay');
+  ov.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('scBackBtn').addEventListener('click', closeScorecard);
+document.getElementById('resultRestartBtn').addEventListener('click', closeScorecard);
+
+/* ── Field validation ── */
+function setErr(eid, iid, msg) {
+  document.getElementById(eid).textContent = msg;
+  document.getElementById(iid).classList.add('error');
+}
+function clearErr(eid, iid) {
+  document.getElementById(eid).textContent = '';
+  document.getElementById(iid).classList.remove('error');
+}
+
+/* ── Modal submit ── */
+document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+document.getElementById('modal-lead').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
+
+document.getElementById('modalSubmitBtn').addEventListener('click', function() {
+  var fname = document.getElementById('m-fname').value.trim();
+  var lname = document.getElementById('m-lname').value.trim();
+  var email = document.getElementById('m-email').value.trim();
+  var ok = true;
+  if (!fname) { setErr('e-fname','m-fname','Required.'); ok=false; } else clearErr('e-fname','m-fname');
+  if (!lname) { setErr('e-lname','m-lname','Required.'); ok=false; } else clearErr('e-lname','m-lname');
+  if (!email) { setErr('e-email','m-email','Required.'); ok=false; }
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErr('e-email','m-email','Valid email needed.'); ok=false; }
+  else clearErr('e-email','m-email');
+  if (!ok) return;
+
+  var btn = document.getElementById('modalSubmitBtn');
+  btn.textContent = 'Saving...';
+  btn.classList.add('btn-loading');
+  ['m-fname','m-lname','m-email'].forEach(function(id){ document.getElementById(id).disabled = true; });
+
+  db.from('leads')
+    .insert({ first_name: fname, last_name: lname, email: email })
+    .select('id')
+    .single()
+    .then(function(result) {
+      if (result.error) {
+        console.error('Lead insert failed:', result.error);
+      } else {
+        leadId = result.data.id;
+      }
+      leadFirstName = fname; leadLastName = lname; leadEmail = email;
+      btn.textContent = 'Start the Scorecard';
+      btn.classList.remove('btn-loading');
+      ['m-fname','m-lname','m-email'].forEach(function(id){ document.getElementById(id).disabled = false; });
+      closeModal(function() {
+        scCurrentIdx = 0; scAnswers = {}; scFarmArea = 'your area';
+        scShowScreen('question');
+        scRenderQ();
+        openScorecard();
+      });
+    });
+});
+
+['m-fname','m-lname','m-email'].forEach(function(id) {
+  document.getElementById(id).addEventListener('focus', function(){
+    clearErr(id.replace('m-','e-'), id);
+  });
+});
+
+/* ── Scorecard screens ── */
+function scShowScreen(name) {
+  document.querySelectorAll('.sc-screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('sc-screen-' + name).classList.add('active');
+  document.getElementById('sc-overlay').scrollTop = 0;
+}
+
+/* ── Render question ── */
+function scRenderQ() {
+  var q = QS[scCurrentIdx];
+  var total = QS.length;
+  document.getElementById('progFill').style.width = ((scCurrentIdx / total) * 100) + '%';
+  document.getElementById('qKicker').textContent = String(q.num).padStart(2,'0') + ' of ' + String(total).padStart(2,'0');
+  document.getElementById('qText').textContent = q.text;
+  var noteEl = document.getElementById('qNote');
+  if (q.note) { noteEl.textContent = q.note; noteEl.style.display = 'block'; }
+  else         { noteEl.textContent = '';     noteEl.style.display = 'none'; }
+
+  var body = document.getElementById('qBody');
+  body.innerHTML = '';
+
+  if (q.type === 'choice') {
+    var wrap = document.createElement('div');
+    wrap.className = 'options';
+    q.opts.forEach(function(opt, i) {
+      var saved = scAnswers[q.id];
+      var el = document.createElement('div');
+      el.className = 'option' + (saved != null && saved.idx === i ? ' selected' : '');
+      el.innerHTML = '<span class="option-dot"></span><span class="option-label">' + opt.label + '</span>';
+      el.addEventListener('click', function() {
+        wrap.querySelectorAll('.option').forEach(function(o){ o.classList.remove('selected'); });
+        el.classList.add('selected');
+        scAnswers[q.id] = {val:opt.val, label:opt.label, idx:i};
+        setTimeout(scAdvance, 280);
+      });
+      wrap.appendChild(el);
+    });
+    body.appendChild(wrap);
+    scRenderNav(null);
+
+  } else if (q.type === 'text') {
+    var saved2 = scAnswers[q.id];
+    var ta = document.createElement('textarea');
+    ta.className = 'text-input';
+    ta.placeholder = q.placeholder || '';
+    ta.rows = (q.id === 'q8') ? 3 : 2;
+    ta.value = saved2 ? saved2.text : '';
+    body.appendChild(ta);
+    scRenderNav(function() {
+      var val = ta.value.trim();
+      if (!val && !q.optional) { ta.classList.add('error'); ta.focus(); return; }
+      ta.classList.remove('error');
+      scAnswers[q.id] = {text: val};
+      if (q.id === 'q1') scFarmArea = val || 'your area';
+      scAdvance();
+    });
+  }
+}
+
+function scRenderNav(onContinue) {
+  var nav = document.getElementById('qNav');
+  nav.innerHTML = '';
+  if (onContinue) {
+    var btn = document.createElement('button');
+    btn.className = 'btn btn-blue';
+    btn.textContent = 'Continue';
+    btn.addEventListener('click', onContinue);
+    nav.appendChild(btn);
+  }
+  if (scCurrentIdx > 0) {
+    var back = document.createElement('button');
+    back.className = 'btn btn-ghost';
+    back.textContent = '\u2190 Back';
+    back.addEventListener('click', function(){ scCurrentIdx--; scRenderQ(); });
+    nav.appendChild(back);
+  }
+}
+
+function scAdvance() {
+  if (scCurrentIdx < QS.length - 1) { scCurrentIdx++; scRenderQ(); }
+  else scShowResult();
+}
+
+/* ── Show result ── */
+function scShowResult() {
+  var scored = ['q2','q3','q4','q5','q6','q9'];
+  var score = scored.reduce(function(s,id){
+    var a = scAnswers[id];
+    return s + (a && a.val != null ? a.val : 0);
+  }, 0);
+  var tier = score <= 6 ? 'hidden' : score <= 11 ? 'inconsistent' : 'visible';
+  var r    = RESULTS[tier];
+  var area = scFarmArea;
+
+  /* Persist all answers + scoring result to Supabase */
+  if (leadId) {
+    var budgetBand = scAnswers.q9 ? scAnswers.q9.label : null;
+    db.from('leads').update({
+      farm_area:       scAnswers.q1  ? scAnswers.q1.text  : null,
+      score:           score,
+      tier:            r.tier,
+      challenge:       scAnswers.q6  ? scAnswers.q6.label : null,
+      audience:        scAnswers.q7  ? scAnswers.q7.label : null,
+      differentiator:  scAnswers.q8  ? scAnswers.q8.text  : null,
+      budget_band:     budgetBand,
+      platform_spread: scAnswers.q10 ? scAnswers.q10.label : null,
+      instagram:       scAnswers.q11 ? scAnswers.q11.text : null,
+      website:         scAnswers.q12 ? scAnswers.q12.text : null,
+      youtube:         scAnswers.q13 ? scAnswers.q13.text : null,
+      tiktok:          scAnswers.q14 ? scAnswers.q14.text : null,
+      other_links:     scAnswers.q15 ? scAnswers.q15.text : null,
+      completed_at:    new Date().toISOString(),
+      qualified:       score >= 7 && budgetBand !== 'Under $250'
+    }).eq('id', leadId).then(function(result) {
+      if (result.error) console.error('Lead update failed:', result.error);
+      /* TODO: trigger Resend email here */
+    });
+  }
+
+  var pct = Math.round((score / 16) * 100);
+  document.getElementById('resultRing').style.background =
+    'conic-gradient(' + r.ringColor + ' 0 ' + pct + '%, var(--ink-600) ' + pct + '% 100%)';
+  document.getElementById('resultScoreNum').textContent = score;
+  document.getElementById('resultScoreNum').style.color = r.ringColor;
+  document.getElementById('resultTierKicker').textContent = r.tier;
+  document.getElementById('resultH2').textContent = r.h2.replace(/\[area\]/g, area);
+
+  var gapsEl = document.getElementById('resultGaps');
+  gapsEl.innerHTML = '';
+  r.gaps.forEach(function(g, i) {
+    var item = document.createElement('div');
+    item.className = 'gap-item';
+    item.innerHTML = '<span class="gap-num">'+(i+1)+'</span><span class="gap-text">'+g.replace(/\[area\]/g, escHtml(area))+'</span>';
+    gapsEl.appendChild(item);
+  });
+
+  document.getElementById('resultCopy').innerHTML = r.copy.replace(/\[area\]/g, escHtml(area));
+  document.getElementById('progFill').style.width = '100%';
+  document.getElementById('resultCTA').href = 'https://cal.com/local-legend/15-min-video-consult';
+
+  var noteEl = document.getElementById('resultEmailNote');
+  if (leadEmail) {
+    document.getElementById('resultEmailDisplay').textContent = leadEmail;
+    noteEl.style.display = 'block';
+  } else {
+    noteEl.style.display = 'none';
+  }
+
+  scShowScreen('result');
+}
+
+/* ── Tweaks preview hooks ── */
+window._previewLanding = function() { closeScorecard(); };
+window._previewModal   = function() {
+  closeScorecard();
+  document.getElementById('m-fname').value = 'Sarah';
+  document.getElementById('m-lname').value = 'Chen';
+  document.getElementById('m-email').value = 'sarah.chen@remax.ca';
+  ['e-fname','e-lname','e-email'].forEach(function(id){ document.getElementById(id).textContent=''; });
+  ['m-fname','m-lname','m-email'].forEach(function(id){ document.getElementById(id).classList.remove('error'); document.getElementById(id).disabled = false; });
+  var btn = document.getElementById('modalSubmitBtn');
+  btn.textContent = 'Start the Scorecard';
+  btn.classList.remove('btn-loading');
+  openScorecardModal();
+};
+window._previewQuestion = function() {
+  var m = document.getElementById('modal-lead'); m.style.display = 'none';
+  scCurrentIdx = 0; scAnswers = {}; scFarmArea = 'your area';
+  scShowScreen('question'); scRenderQ(); openScorecard();
+};
+window._previewTier = function(tier, area) {
+  var m = document.getElementById('modal-lead'); m.style.display = 'none';
+  scFarmArea = area || 'Kitsilano'; leadEmail = 'sarah.chen@remax.ca';
+  scAnswers = {};
+  var scores = {
+    hidden:       {q2:{val:0},q3:{val:0},q4:{val:0},q5:{val:0},q6:{val:1},q9:{val:0}},
+    inconsistent: {q2:{val:1},q3:{val:2},q4:{val:1},q5:{val:1},q6:{val:1},q9:{val:2}},
+    visible:      {q2:{val:3},q3:{val:3},q4:{val:3},q5:{val:3},q6:{val:1},q9:{val:3}}
+  };
+  Object.keys(scores[tier]||scores.hidden).forEach(function(k){ scAnswers[k]=scores[tier][k]; });
+  scShowResult(); openScorecard();
+};
+</script>
+
+</body>
+</html>

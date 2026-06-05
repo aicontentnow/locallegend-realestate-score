@@ -1,0 +1,9 @@
+# Ignore everything
+*
+
+# Except the production app
+!index.html
+!CNAME
+!.gitignore
+!brand/
+!brand/**
