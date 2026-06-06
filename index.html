@@ -430,7 +430,7 @@ nav {
 .band { padding: 88px 0; }
 .band-cream { background: var(--cream); color: var(--ink-navy); }
 .sec-top { text-align: center; max-width: 760px; margin: 0 auto 52px; }
-.grid-footnote { text-align: center; font-size: 15px; color: var(--ink-soft); margin-top: 32px; max-width: 52ch; margin-left: auto; margin-right: auto; line-height: 1.6; }
+.grid-footnote { text-align: center; font-size: 15px; color: var(--signal-lime); margin-top: 32px; max-width: 52ch; margin-left: auto; margin-right: auto; line-height: 1.6; font-family: var(--font-display); font-weight: 700; letter-spacing: .04em; }
 .sec-top .skicker {
   font-family: var(--font-display); font-weight: 700; font-size: 12px;
   letter-spacing: .14em; text-transform: uppercase; color: var(--signal-lime);
@@ -550,8 +550,9 @@ footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); pa
   /* Contain hero section and video frame */
   .hero-section { padding: 48px 0 56px; }
   .vid-showcase { overflow: hidden; margin: 0 auto; width: 100%; }
-  .vid-frame-wrap { overflow: hidden; }
-  .vid-showcase { align-items: center; }
+  .vid-frame-wrap { overflow: hidden; max-width: 260px; width: 100%; margin: 0 auto; }
+  .vid-frame { max-height: none; }
+  .vid-tabs { -webkit-overflow-scrolling: touch; touch-action: pan-x; }
   /* Center video grid */
   .vgrid { margin: 0 auto; }
   .band .wrap { display: flex; flex-direction: column; align-items: center; }
@@ -757,7 +758,7 @@ footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); pa
         <span class="vstyle">Claymation</span>
       </div>
     </div>
-    <p class="grid-footnote">Six styles and counting. Every video built on your brand, your voice, for your farm area. This is just a taste of what Local Legend produces.</p>
+    <p class="grid-footnote">Six styles and counting.</p>
   </div>
 </section>
 
