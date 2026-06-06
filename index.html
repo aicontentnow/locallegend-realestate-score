@@ -546,8 +546,14 @@ footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); pa
   .score-float { display: none; }
   .float-pin { display: none; }
   /* Contain hero showcase within viewport */
-  .hero-section { overflow-x: hidden; }
+  .hero-section { overflow-x: hidden; padding: 48px 0 56px; }
   .vid-frame-wrap { overflow: hidden; }
+  /* Nav button -- smaller, not crowding the border */
+  .btn-lp-sm { padding: 9px 14px; font-size: 13px; }
+  /* Hero CTA -- full width, equal padding, no overflow */
+  .btn-lp-lg { width: 100%; padding: 16px 20px; font-size: 16px; justify-content: center; box-sizing: border-box; }
+  /* Sub text -- one size down to keep CTA above fold */
+  .hero-copy .sub { font-size: 15px; line-height: 1.5; }
 }
 </style>
 <!-- Supabase JS client -->
