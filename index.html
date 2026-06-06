@@ -1000,7 +1000,7 @@ document.querySelectorAll('.vcard').forEach(function(card) {
 
 /* ── Supabase config ── */
 var SUPABASE_URL      = 'https://gcbvvausrmbbkfazojpl.supabase.co';
-var SUPABASE_ANON_KEY = 'sb_publishable_dx9sYWtLtpXacM9ZIXoYRg_VPiKG69P';
+var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjYnZ2YXVzcm1iYmtmYXpvanBsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3MjQ0OTMsImV4cCI6MjA5MjMwMDQ5M30.AfJ_vTz3aSIlEwYeVqJ7Oy5LSPt8v51YyhNyqElh3NY';
 var db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* Escape user-supplied strings before insertion into innerHTML */
@@ -1138,19 +1138,24 @@ document.getElementById('modalSubmitBtn').addEventListener('click', function() {
     .then(function(result) {
       if (result.error) {
         console.error('Lead insert failed:', result.error);
+        btn.textContent = 'Start the Scorecard';
+        btn.classList.remove('btn-loading');
+        ['m-fname','m-lname','m-email'].forEach(function(id){ document.getElementById(id).disabled = false; });
+        var errEl = document.getElementById('e-email');
+        if (errEl) { errEl.textContent = 'Something went wrong. Please try again.'; }
       } else {
         leadId = result.data.id;
+        leadFirstName = fname; leadLastName = lname; leadEmail = email;
+        btn.textContent = 'Start the Scorecard';
+        btn.classList.remove('btn-loading');
+        ['m-fname','m-lname','m-email'].forEach(function(id){ document.getElementById(id).disabled = false; });
+        closeModal(function() {
+          scCurrentIdx = 0; scAnswers = {}; scFarmArea = 'your area';
+          scShowScreen('question');
+          scRenderQ();
+          openScorecard();
+        });
       }
-      leadFirstName = fname; leadLastName = lname; leadEmail = email;
-      btn.textContent = 'Start the Scorecard';
-      btn.classList.remove('btn-loading');
-      ['m-fname','m-lname','m-email'].forEach(function(id){ document.getElementById(id).disabled = false; });
-      closeModal(function() {
-        scCurrentIdx = 0; scAnswers = {}; scFarmArea = 'your area';
-        scShowScreen('question');
-        scRenderQ();
-        openScorecard();
-      });
     });
 });
 
