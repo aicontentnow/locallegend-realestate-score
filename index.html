@@ -11,6 +11,7 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--ink-navy); color: var(--cream); -webkit-font-smoothing: antialiased; }
+.mob { display: none; }
 .wrap { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
 
 /* ═══ MODAL ═══ */
@@ -545,15 +546,21 @@ footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); pa
   /* Hide decorative overflow elements on mobile */
   .score-float { display: none; }
   .float-pin { display: none; }
-  /* Contain hero showcase within viewport */
-  .hero-section { overflow-x: hidden; padding: 48px 0 56px; }
+  /* Contain hero section and video frame */
+  .hero-section { padding: 48px 0 56px; }
+  .vid-showcase { overflow: hidden; }
   .vid-frame-wrap { overflow: hidden; }
   /* Nav button -- smaller, not crowding the border */
   .btn-lp-sm { padding: 9px 14px; font-size: 13px; }
-  /* Hero CTA -- full width, equal padding, no overflow */
-  .btn-lp-lg { width: 100%; padding: 16px 20px; font-size: 16px; justify-content: center; box-sizing: border-box; }
+  /* Hero CTA -- auto-sized like the bottom CTA block */
+  .btn-lp-lg { padding: 15px 26px; font-size: 16px; }
+  .cta-row { align-items: center; }
   /* Sub text -- one size down to keep CTA above fold */
   .hero-copy .sub { font-size: 15px; line-height: 1.5; }
+  /* Contain hero copy without clipping text */
+  .hero-copy { max-width: 100%; }
+  /* Mobile line break helper */
+  .mob { display: block; }
 }
 </style>
 <!-- Supabase JS client -->
@@ -664,7 +671,7 @@ footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); pa
       <h1>Is your brand actually <span class="hi">visible,</span> or are buyers scrolling right past you?</h1>
       <p class="sub">Take the 2-minute Visibility Scorecard and get a custom report on exactly what is costing you listings, and how to fix it.</p>
       <ul class="bullets">
-        <li><ll-pin star="ink"></ll-pin><span>See how your presence <b>stacks up in your farm area.</b></span></li>
+        <li><ll-pin star="ink"></ll-pin><span>See how your presence <b>stacks up in<br class="mob"> your farm area.</b></span></li>
         <li><ll-pin star="ink"></ll-pin><span>Get your score and your <b>three biggest gaps.</b></span></li>
         <li><ll-pin star="ink"></ll-pin><span>Built for agents who want to be the name people think of, <b>without spending hours on content.</b></span></li>
       </ul>
