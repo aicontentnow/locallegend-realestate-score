@@ -522,6 +522,40 @@ nav {
 }
 .trust-cta .d { color: var(--signal-lime); font-size: 7px; }
 
+.included-band { background: var(--ink-800); }
+.included-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.included-col { background: var(--ink-700); border: 1.5px solid var(--ink-600); border-radius: var(--r-lg); padding: 28px 26px; }
+.included-col-head { font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; padding-bottom: 16px; border-bottom: 1.5px solid var(--ink-600); margin-bottom: 18px; }
+.included-yes { color: #22c55e; }
+.included-no { color: #f87171; }
+.included-up { color: var(--signal-lime); }
+.included-list { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+.included-list li { display: flex; gap: 11px; align-items: flex-start; font-size: 15px; line-height: 1.5; color: rgba(244,239,230,.82); }
+.inc-check { color: #22c55e; font-size: 14px; flex: 0 0 auto; margin-top: 1px; font-weight: 700; }
+.inc-x { color: #f87171; font-size: 16px; flex: 0 0 auto; margin-top: 0px; font-weight: 700; }
+.inc-up { color: var(--signal-lime); font-size: 16px; flex: 0 0 auto; margin-top: 0px; font-weight: 700; }
+.coming-soon { display: inline-block; font-size: 10px; font-family: var(--font-display); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; background: rgba(198,240,66,.12); color: var(--signal-lime); padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+.faq-band { background: var(--ink-navy); }
+.faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; }
+.faq-item { border-bottom: 1.5px solid var(--ink-600); }
+.faq-item:first-child { border-top: 1.5px solid var(--ink-600); }
+.faq-q {
+  width: 100%; background: none; border: none; cursor: pointer;
+  text-align: left; padding: 22px 0;
+  font-family: var(--font-display); font-weight: 700; font-size: 17px;
+  color: var(--cream); line-height: 1.35;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  transition: color .15s;
+}
+.faq-q:hover { color: #fff; }
+.faq-q::after { content: '+'; font-size: 22px; font-weight: 300; color: var(--signal-lime); flex: 0 0 auto; transition: transform .2s; }
+.faq-q[aria-expanded="true"] { color: #fff; }
+.faq-q[aria-expanded="true"]::after { transform: rotate(45deg); }
+.faq-a { display: none; padding-bottom: 20px; }
+.faq-a.open { display: block; }
+.faq-a p { font-size: 16px; line-height: 1.7; color: rgba(244,239,230,.72); margin: 0; }
+@media (max-width: 600px) { .included-grid { grid-template-columns: 1fr; gap: 16px; } }
+
 footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); padding: 48px 0 64px; }
 .foot-in { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 .foot-in .fl { font-family: var(--font-body); font-size: 14px; color: var(--ink-soft); }
@@ -723,8 +757,8 @@ footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); pa
   <div class="wrap">
     <div class="sec-top">
       <div class="skicker"><ll-pin star="cream" style="width:16px;height:19px"></ll-pin> Your signature style</div>
-      <h2>Pick one style. Own it completely.</h2>
-      <p>We produce 30 videos a month in your signature style, consistently. Your neighbourhood starts recognising it. That is how you become the name.</p>
+      <h2>Choose your look. We build everything.</h2>
+      <p>Browse the styles below. Pick the one that fits your brand and your market. We produce 30 videos a month in that style, every month, until your neighbourhood knows it is yours.</p>
     </div>
     <div class="vgrid" id="vGrid">
       <div class="vcard" data-gridstyle="ugc">
@@ -788,12 +822,104 @@ footer { background: var(--ink-navy); border-top: 1.5px solid var(--ink-600); pa
   </div>
 </section>
 
+<section class="band included-band">
+  <div class="wrap">
+    <div class="sec-top" style="color:var(--cream)">
+      <div class="skicker"><ll-pin star="cream" style="width:16px;height:19px"></ll-pin> No surprises</div>
+      <h2 style="color:#fff">Everything you need. Nothing you don't.</h2>
+    </div>
+    <div class="included-grid">
+      <div class="included-col">
+        <div class="included-col-head included-yes">What's included</div>
+        <ul class="included-list">
+          <li><span class="inc-check">&#10003;</span>30 x 30-second videos per month</li>
+          <li><span class="inc-check">&#10003;</span>One signature style, yours exclusively in your farm area</li>
+          <li><span class="inc-check">&#10003;</span>Custom 3D character assets built for your brand</li>
+          <li><span class="inc-check">&#10003;</span>Script writing and production every month</li>
+          <li><span class="inc-check">&#10003;</span>Post-processing and delivery-ready files</li>
+          <li><span class="inc-check">&#10003;</span>Works on Instagram Reels, TikTok, YouTube Shorts, and Facebook Reels</li>
+          <li><span class="inc-check">&#10003;</span>You film nothing. Ever.</li>
+        </ul>
+      </div>
+      <div class="included-col">
+        <div class="included-col-head included-no">What's not included</div>
+        <ul class="included-list">
+          <li><span class="inc-x">&#215;</span>Multiple styles (you own one, consistently)</li>
+          <li><span class="inc-x">&#215;</span>Social posting or account management</li>
+          <li><span class="inc-x">&#215;</span>Longer format videos (available as an upgrade)</li>
+        </ul>
+        <div class="included-col-head included-up" style="margin-top:28px">Upgrades available</div>
+        <ul class="included-list">
+          <li><span class="inc-up">&#43;</span>Dual Format: adds a 60-second cut to every video, same production (+~$500/month)</li>
+          <li><span class="inc-up">&#43;</span>Sonic Branding: a custom music bed that becomes your audio signature <span class="coming-soon">Coming soon</span></li>
+          <li><span class="inc-up">&#43;</span>Motion Graphic Logo: animated logo across every video <span class="coming-soon">Coming soon</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="band band-cream excl-wrap" style="padding-top:0">
   <div class="wrap">
     <div class="excl">
       <ll-pin star="ink"></ll-pin>
       <h2>One agent per area. When yours is taken, it is taken.</h2>
       <p>We work with a single operator in each neighbourhood. No training your competition. The legend of your local is a job for one.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band faq-band">
+  <div class="wrap">
+    <div class="sec-top" style="color:var(--cream)">
+      <div class="skicker"><ll-pin star="cream" style="width:16px;height:19px"></ll-pin> FAQ</div>
+      <h2 style="color:#fff">Everything you want to know before you book.</h2>
+    </div>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">What exactly is included in the 30 videos per month?</button>
+        <div class="faq-a"><p>Every month you receive 30 x 30-second videos, written, produced, post-processed, and delivered ready to post. Scripts, production, editing, captions, delivery in the correct format for every major short-form platform. You film nothing.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">What does "signature style" mean?</button>
+        <div class="faq-a"><p>You choose one visual style from our library. We produce every one of your 30 monthly videos in that style, month after month. Consistency is what builds recognition. The agent your neighbourhood thinks of did not get there by posting random content. They showed up with the same look, the same energy, every single week.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">Do I have to be on camera?</button>
+        <div class="faq-a"><p>No. We produce everything. If you would like to appear in your videos, we can work with your existing photos and headshots to create a 3D character that represents you. No shoot days required.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">How does the one-agent-per-area rule work?</button>
+        <div class="faq-a"><p>We take one client per farm area. Once your area is claimed, it is closed to every other agent. You own your territory visually. If your area is still available when you complete the scorecard, you will see it confirmed on your result screen.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">Can I switch styles later?</button>
+        <div class="faq-a"><p>Yes, with one batch of notice. Style changes require us to rebuild your asset library, so we ask for one month's lead time. Style upgrades are available to active clients.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">What platforms do the videos work on?</button>
+        <div class="faq-a"><p>All 9:16 vertical platforms: Instagram Reels, TikTok, YouTube Shorts, and Facebook Reels. One production batch, everywhere you need it.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">What if I want longer videos?</button>
+        <div class="faq-a"><p>The Dual Format upgrade adds a 60-second cut to every video in your monthly batch. Roughly $500 per month on top of your base package.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">Is there a long-term contract?</button>
+        <div class="faq-a"><p>No annual lock-in. Monthly commitment. We want clients who stay because the results are working, not because they are locked in.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">How long does setup take?</button>
+        <div class="faq-a"><p>Typically one to two weeks to build your asset library, complete your brand intake, and select your style. Your first batch ships after that.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">How is this different from hiring a videographer?</button>
+        <div class="faq-a"><p>A videographer needs you on location, needs shoot days scheduled, needs direction on-set, and needs editing time after. We handle the entire production pipeline without a single shoot day, every month, at a fraction of the equivalent cost.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">What is the founding rate?</button>
+        <div class="faq-a"><p>The first five agents who join pay $797 per month and lock in that rate permanently. The standard rate for all agents after that is $1,497 per month.</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1210,6 +1336,21 @@ window._previewTier = function(tier, area) {
   Object.keys(scores[tier]||scores.hidden).forEach(function(k){ scAnswers[k]=scores[tier][k]; });
   scShowResult(); openScorecard();
 };
+
+/* ── FAQ accordion ── */
+document.querySelectorAll('.faq-q').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var expanded = this.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.faq-q').forEach(function(b) {
+      b.setAttribute('aria-expanded','false');
+      b.nextElementSibling.classList.remove('open');
+    });
+    if (!expanded) {
+      this.setAttribute('aria-expanded','true');
+      this.nextElementSibling.classList.add('open');
+    }
+  });
+});
 </script>
 
 </body>
