@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Local Legend - Real Estate Agent Visibility Scorecard</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2C10.477 2 6 6.477 6 12c0 7.5 10 18 10 18s10-10.5 10-18c0-5.523-4.477-10-10-10z' fill='%233B6BFF'/%3E%3Ccircle cx='16' cy='12' r='4' fill='%23C6F042'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2C10.477 2 6 6.477 6 12c0 7.5 10 18 10 18s10-10.5 10-18c0-5.523-4.477-10-10-10z' fill='%233B6BFF'/%3E%3Ccircle cx='16' cy='12' r='4' fill='%23C6F042'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -139,6 +141,9 @@ body { background: var(--ink-navy); color: var(--cream); -webkit-font-smoothing:
 .q-note { font-size: 14px; color: var(--ink-soft); margin: 4px 0 22px; line-height: 1.5; }
 
 .options { display: flex; flex-direction: column; gap: 9px; margin: 22px 0 20px; }
+.area-groups { display: flex; flex-direction: column; gap: 20px; margin: 22px 0 20px; }
+.area-group-label { font-family: var(--font-display); font-weight: 700; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: rgba(244,239,230,.4); margin-bottom: 8px; }
+.area-group .options { margin: 0; }
 .option {
   background: var(--ink-700); border: 1.5px solid var(--ink-600);
   border-radius: var(--r-md); padding: 16px 18px;
@@ -1019,7 +1024,21 @@ var scAnswers     = {};
 var scFarmArea    = 'your area';
 
 var QS = [
-  { id:'q1',  num:1,  type:'text',   text:'Which area or neighbourhood do you primarily farm?', placeholder:'e.g. Kitsilano, East Van, Mount Pleasant...', scored:false, optional:false },
+  { id:'q1', num:1, type:'area-select', text:'Which area do you primarily farm?', note:'Select one. Each area is exclusive -- one agent per area.', scored:false, optional:false,
+    groups:[
+      {label:'City of Vancouver', opts:['Downtown Vancouver / West End','Kitsilano / Point Grey','Cambie / Oakridge','Dunbar / Kerrisdale','East Vancouver','South Vancouver / Marpole']},
+      {label:'North Shore', opts:['West Vancouver','North Vancouver']},
+      {label:'Burnaby / New Westminster', opts:['Burnaby','New Westminster']},
+      {label:'Tri-Cities', opts:['Coquitlam','Port Coquitlam','Port Moody']},
+      {label:'Richmond / Delta', opts:['Richmond','Ladner / Tsawwassen','North Delta']},
+      {label:'Surrey / White Rock', opts:['Surrey City Centre / Whalley','Newton','Cloverdale','South Surrey / White Rock','Fleetwood / Guildford']},
+      {label:'Langley', opts:['Langley City','Willoughby / Walnut Grove','Langley Township (other)']},
+      {label:'Maple Ridge / Pitt Meadows', opts:['Maple Ridge','Pitt Meadows']},
+      {label:'Mission / Abbotsford', opts:['Mission','Abbotsford']},
+      {label:'Squamish', opts:['Squamish']},
+      {label:'Other', opts:['Other (Fraser Valley / not listed)']}
+    ]
+  },
   { id:'q2',  num:2,  type:'choice', text:'How often do you post video content right now?', scored:true,
     opts:[{label:'Never',val:0},{label:'Once in a while',val:1},{label:'A few times a month',val:2},{label:'Weekly or more',val:3}] },
   { id:'q3',  num:3,  type:'choice', text:'What does your content usually look like?', scored:true,
@@ -1203,6 +1222,44 @@ function scRenderQ() {
       wrap.appendChild(el);
     });
     body.appendChild(wrap);
+    scRenderNav(null);
+
+  } else if (q.type === 'area-select') {
+    var savedArea = scAnswers[q.id] ? scAnswers[q.id].label : null;
+    var groupWrap = document.createElement('div');
+    groupWrap.className = 'area-groups';
+    q.groups.forEach(function(grp) {
+      var grpEl = document.createElement('div');
+      grpEl.className = 'area-group';
+      var lbl = document.createElement('div');
+      lbl.className = 'area-group-label';
+      lbl.textContent = grp.label;
+      grpEl.appendChild(lbl);
+      var optsEl = document.createElement('div');
+      optsEl.className = 'options';
+      grp.opts.forEach(function(areaName) {
+        var el = document.createElement('div');
+        el.className = 'option' + (savedArea === areaName ? ' selected' : '');
+        var dot = document.createElement('span');
+        dot.className = 'option-dot';
+        var label = document.createElement('span');
+        label.className = 'option-label';
+        label.textContent = areaName;
+        el.appendChild(dot);
+        el.appendChild(label);
+        el.addEventListener('click', function() {
+          groupWrap.querySelectorAll('.option').forEach(function(o){ o.classList.remove('selected'); });
+          el.classList.add('selected');
+          scAnswers[q.id] = {val:0, label:areaName};
+          scFarmArea = areaName;
+          setTimeout(scAdvance, 280);
+        });
+        optsEl.appendChild(el);
+      });
+      grpEl.appendChild(optsEl);
+      groupWrap.appendChild(grpEl);
+    });
+    body.appendChild(groupWrap);
     scRenderNav(null);
 
   } else if (q.type === 'text') {
